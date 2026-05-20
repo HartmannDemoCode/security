@@ -1,0 +1,12 @@
+# Sources: Articles, Books, and More
+- [Ukrainian hackers target russian soldiers - Video](https://www.youtube.com/watch?v=K3QP9hwYB4A)
+- [Danske hoteller hacket](https://www.dr.dk/nyheder/penge/hoteldirektoer-efter-cyberangreb-det-er-som-blive-klaedt-af)
+- [Danske virksomheder er sårbare](https://www.dr.dk/nyheder/penge/opraab-mindre-virksomheder-enormt-saarbare-over-cyberangreb)
+- [Kommunale hjemmesider under angreb](https://www.dr.dk/nyheder/indland/angreb-paa-kommuners-hjemmesider-fortsaetter-paa-fjerde-dag-central-aktoer-efterspoerger-nu-flere)
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
+- 
