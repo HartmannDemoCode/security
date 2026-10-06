@@ -51,3 +51,5 @@ Bedømmelsestype - Intern censur
 Tidsmæssig placering - 4. Semester - Ved udgangen af 4. semester.  
 Re- og sygeeksamen: Der gælder samme regler som for den ordinære eksamen.
 Reeksamen kan evt. afholdes online.
+
+Lene (elektriker) 9133 0021
