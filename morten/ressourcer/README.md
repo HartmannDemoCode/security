@@ -2,6 +2,17 @@
 
 Her samler jeg de ressourcer, der virker mest relevante for Security-valgfaget.
 
+Mine nærmere undersøgelser ligger her:
+
+- [MOOC.fi](mooc.fi.md)
+- [OverTheWire Bandit](over-the-wire.md)
+- [Overvejelser om værktøjer og sprog](vaerktoejer.md)
+- [Materiale til login og adgangskontrol](adgangskontrol.md)
+- [Materiale om afhængigheder og sikker opsætning](afhaengigheder.md)
+- [Ekstra læsning og podcasts](ekstra-materiale.md)
+
+Prioriteringen for mit arbejde ligger i [ugeplanen](../forloeb/ugeplan.md). De faglige noter ligger under emner, blandt andet [adgangskontrol](../emner/adgangskontrol.md) og [afhængigheder](../emner/afhaengigheder.md).
+
 Prioriteringen tager udgangspunkt i, at de studerende er **datamatikere på 4. semester**. De er derfor ikke begyndere i programmering, databaser, HTTP, API'er osv., men kan godt være begyndere inden for security.
 
 ---
