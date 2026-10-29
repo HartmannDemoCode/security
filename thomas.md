@@ -41,3 +41,7 @@
 
 # What is the process of making a web application secure?
 1. 
+
+# Hvad skal være formatet på eksamensrapporten?
+- Individuel eller gruppe?
+- Headlines og struktur?
