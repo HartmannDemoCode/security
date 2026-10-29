@@ -29,7 +29,7 @@ Provide a one-page explanation of the most important risks, the improvements mad
 - What does the system do, and who uses it?
 - What technologies, services, and infrastructure does it depend on?
 - What sensitive data and important functionality does it contain?
-- Which parts will the group investigate, and which are outside the scope?
+- Which parts will the you investigate, and which are outside the scope?
 
 Include an architecture diagram showing components, data flows, and trust boundaries.
 
@@ -43,7 +43,7 @@ Describe a small number of concrete scenarios, such as:
 
 ### 4. Investigation Method
 
-Describe how the group investigated the system: code review, configuration review, manual testing, and automated tools. Explain why each method was selected and its limitations.
+Describe how you investigated the system: code review, configuration review, manual testing, and automated tools. Explain why each method was selected and its limitations.
 
 Document the authorized test environment so the work is reproducible.
 
@@ -72,7 +72,7 @@ For selected findings, explain:
 
 Show whether the improvements worked. Include before-and-after evidence and tests that check both the security control and legitimate functionality.
 
-Distinguish between verified results, assumptions, and issues the group could not resolve.
+Distinguish between verified results, assumptions, and issues you could not resolve.
 
 ### 8. Prioritized Action Plan
 
@@ -86,26 +86,26 @@ Include rough effort estimates and dependencies.
 
 ### 9. Discussion and Conclusion
 
-Answer the original question. Discuss limitations, alternative solutions, and how the group's understanding changed during the investigation.
+Answer the original question. Discuss limitations, alternative solutions, and how your understanding changed during the investigation.
 
 ### Appendices
 
 Place detailed tool output, test instructions, and longer code examples in appendices. Keep the evidence needed to understand the conclusions in the main report.
 
-## Study Group Milestones
+## Milestones
 
 Build the report through short milestones:
 
 1. **System and scope review:** Present the architecture and agree on a manageable investigation.
-2. **Threat-model workshop:** Another group challenges the proposed threats and assumptions.
+2. **Threat-model workshop:** Another student challenges the proposed threats and assumptions.
 3. **Findings review:** Present evidence and defend the prioritization.
 4. **Improvement demonstration:** Demonstrate one attack scenario before and after a fix.
 5. **Final report and oral defence:** Explain conclusions and justify decisions.
 
 ## Suggested Scope
 
-Investigate **three to five security problems in depth**, with selected improvements implemented and verified. This encourages depth and leaves room for groups to choose different security topics.
+Investigate **three to five security problems in depth**, with selected improvements implemented and verified. This encourages depth and leaves room for students to choose different security topics.
 
 ## Assessment Principle
 
-> Reward the quality of the reasoning, evidence, and evaluation—not the number of vulnerabilities or tools used.
+- Reward the quality of the reasoning, evidence, and evaluation—not the number of vulnerabilities or tools used.
