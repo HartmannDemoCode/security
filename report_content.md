@@ -17,7 +17,7 @@ The report documents the investigation. Reading, implementation, and testing.
 ## Possible Themes — Choose One
 
 || Theme | Example investigation question | Possible evidence |
-|| --- | --- | --- |
+|---| --- | --- | --- |
 | 1. | Authorization and data ownership | Can a user access or change another user's resources through the API? | Access-rule table and tests with different users and roles |
 | 2. | Authentication and sessions | Does the system enforce its intended login, logout, and session-expiry behaviour? | Relevant configuration, request traces, and lifecycle tests |
 | 3. | Input handling | How does one selected input path handle malicious or unexpected input? | Data-flow description, relevant code, and targeted tests |
