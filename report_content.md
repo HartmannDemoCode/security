@@ -29,7 +29,7 @@ The report documents the investigation. Reading, implementation, and testing.
 
 # Report content suggestions
 
-## 1. Problem, System, and Scope (1 page)
+## 1. Problem, System, and Scope (approximately 1 page)
 
 
 [Briefly describe the application, its users, relevant data, and web stack. Include a small architecture diagram if useful.]
@@ -47,7 +47,7 @@ Example:
 **Test environment:** [Describe the authorized environment, application version, and test accounts.]
 
 
-## 2. Relevant Concepts and Threat Model (2 pages)
+## 2. Relevant Concepts and Threat Model (3 pages)
 
 [Explain only the security concepts needed to understand this investigation. Connect each concept to the actual application and cite relevant sources.]
 
@@ -57,6 +57,36 @@ Example:
 - What attacks or misuse scenarios will be investigated?
 
 **Expected security behaviour:** [State what the system should allow and prevent.]
+
+### Peer Feedback and Revisions
+
+Present the revised threat model in this chapter. Then briefly explain how feedback from the threat-model workshop influenced it. Aim for approximately a quarter to half a normal page, included within Chapter 2's existing page allocation.
+
+Document:
+
+- **What was challenged:** Which threat, assumption, or omission did the other student question?
+- **Your response:** What did you change, or why did you retain your original decision?
+- **The consequence:** How did this affect your investigation or planned tests?
+
+You do not need to accept every suggestion. Explain the reasoning behind your decisions, including feedback that you chose not to act on.
+
+#### Example
+
+During the workshop, a fellow student questioned the assumption that authenticated users could only access their own bookings. This led me to add a scenario where a user changes the booking ID in an API request. I extended the investigation to test ownership checks on both reading and updating bookings.
+
+You may use a table instead of prose:
+
+| Peer feedback | Decision and justification | Effect on investigation |
+| --- | --- | --- |
+| Have you considered users accessing another user's bookings? | Added an authenticated attacker scenario because bookings contain private information | Added ownership tests for reading and updating bookings |
+| Should denial-of-service attacks be included? | Kept outside scope because the investigation focuses on authorization | Recorded as a scope limitation |
+
+#### Connections to the Rest of the Report
+
+- Update the scope in **Chapter 1** if the workshop changes the investigation's boundaries.
+- Present findings from the resulting tests in **Chapter 4: Findings and Risk**.
+- Discuss relevant remaining limitations in **Chapter 6: Discussion and Next Steps**.
+- Place detailed workshop notes in an **appendix**, if useful. Keep the important decisions and their justification in this chapter.
 
 
 ## 3. Investigation Method (1 page)
