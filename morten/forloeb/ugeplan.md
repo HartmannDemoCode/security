@@ -1,6 +1,6 @@
 # Ugens undersøgelse
 
-Status: Ikke startet.
+Status: I gang. OWASP A01 og A07 er læst, og PortSwiggers adgangskontrolafsnit med 13 labs er gennemført. Overførslen til eget Java-projekt og loginøvelsen mangler endnu.
 
 Den samlede ramme er 20 timer. Jeg arbejder med to samlede forløb: login og adgangskontrol samt afhængigheder og sikker opsætning. Der er ingen fast fordeling mellem opgaverne.
 
@@ -14,8 +14,12 @@ PHP2Shell er min case til opdateringsdelen. Jeg tager udgangspunkt i PHP-projekt
 
 ## Login og adgangskontrol – A01 og A07
 
-- [ ] Læse OWASP A01 og A07 og bruge PortSwigger til uddybning.
-- [ ] Prøve én IDOR-lab og 2FA simple bypass og gemme relevante requests og resultater.
+- [x] Læse OWASP A01 og A07.
+- [x] Bruge PortSwiggers adgangskontrolafsnit og de 13 tilhørende labs til uddybning af A01.
+- [ ] Bruge PortSwigger til uddybning af A07.
+- [x] Løse én IDOR-lab: User ID controlled by request parameter, with unpredictable user IDs.
+- [ ] Løse 2FA simple bypass.
+- [ ] Gemme relevante requests og resultater fra øvelserne.
 - [ ] Lave et lille Java-eksempel på fejlen og rettelsen.
 - [ ] Teste ejerens adgang og afvisning af en anden bruger.
 - [ ] Skrive en kort forklaring af årsag, konsekvens og rettelse.

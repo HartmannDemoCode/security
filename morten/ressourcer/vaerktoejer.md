@@ -50,6 +50,19 @@ nc
 
 Her handler det om at kunne undersøge et system og bruge eksisterende værktøjer effektivt.
 
+## Burp Suite
+
+Burp Suite er et værktøj til at undersøge sikkerheden i webapplikationer. Det gør HTTP-kommunikationen synlig, så jeg kan undersøge, hvordan serveren reagerer, når en request ændres.
+
+- [Proxy](https://portswigger.net/burp/documentation/desktop/tools/proxy) kan opsnappe og ændre requests mellem browseren og serveren. HTTP history giver overblik over trafikken.
+- [Repeater](https://portswigger.net/burp/documentation/desktop/tools/repeater) kan bruges til at ændre og sende den samme request flere gange og undersøge svarene.
+
+Det er relevant til at undersøge path traversal, IDOR og loginfejl ved at ændre parametre og se, hvordan serveren reagerer.
+
+[Community Edition](https://portswigger.net/burp/communitydownload) er gratis og tilstrækkelig til de manuelle øvelser med Proxy og Repeater. Den automatiske sårbarhedsscanner kræver Professional.
+
+Til valgfaget vil jeg starte med at kunne finde en request i HTTP history, sende den til Repeater, ændre én parameter og forklare resultatet. Det giver en konkret forbindelse mellem HTTP, en sårbarhed og test af en rettelse.
+
 ## Mulig opdeling
 
 ### Java

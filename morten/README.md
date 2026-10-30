@@ -13,6 +13,7 @@ Hvilke kurser, sider og værktøjer findes der, og hvad synes jeg om dem efter a
 - [Materiale til login og adgangskontrol](ressourcer/adgangskontrol.md)
 - [Materiale om afhængigheder og sikker opsætning](ressourcer/afhaengigheder.md)
 - [Ekstra læsning og podcasts](ressourcer/ekstra-materiale.md) – artikler, udvalgte bogkapitler og konkrete podcastafsnit til de to forløb.
+- [Microsoft – STRIDE og Security Development Lifecycle (SDL)](ressourcer/microsoft/README.md)
 
 ## Forløb
 

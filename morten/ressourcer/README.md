@@ -10,6 +10,8 @@ Mine nærmere undersøgelser ligger her:
 - [Materiale til login og adgangskontrol](adgangskontrol.md)
 - [Materiale om afhængigheder og sikker opsætning](afhaengigheder.md)
 - [Ekstra læsning og podcasts](ekstra-materiale.md)
+- [OWASP – Proactive Controls og ASVS](owasp/README.md)
+- [Microsoft – STRIDE og Security Development Lifecycle (SDL)](microsoft/README.md)
 
 Prioriteringen for mit arbejde ligger i [ugeplanen](../forloeb/ugeplan.md). De faglige noter ligger under emner, blandt andet [adgangskontrol](../emner/adgangskontrol.md) og [afhængigheder](../emner/afhaengigheder.md).
 
@@ -240,9 +242,9 @@ God til den defensive side:
 
 ## OWASP ASVS
 
-https://owasp.org/www-project-application-security-verification-standard/
+[ASVS – udgave, ressourcer og brug i undervisningen](owasp/asvs.md)
 
-Kan bruges som inspiration til sikkerhedskrav og vurdering af applikationer.
+Kan bruges til konkrete sikkerhedskrav og vurdering af applikationer. I [OWASP-mappen](owasp/README.md) ligger også [Proactive Controls](owasp/proactive-controls.md) og en forklaring af sammenhængen mellem ressourcerne.
 
 ---
 
@@ -257,6 +259,19 @@ Relevant til:
 - trust boundaries
 - threats
 - mitigations
+
+---
+
+## Microsoft – STRIDE og Security Development Lifecycle (SDL)
+
+[Microsoft-ressourcer – overblik og officielle links](microsoft/README.md)
+
+Relevant til trusselsmodellering og sikker udvikling:
+
+- [STRIDE](microsoft/stride.md) hjælper med at identificere trusler mod en applikation.
+- [SDL](microsoft/sdl.md) giver en ramme for sikkerhedsarbejdet gennem udvikling og drift.
+
+Kan kobles til arbejdet med OWASP ved at lade en identificeret trussel føre til et sikkerhedskrav, en implementering og en test.
 
 ---
 

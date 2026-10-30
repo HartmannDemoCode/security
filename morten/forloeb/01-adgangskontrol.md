@@ -1,6 +1,6 @@
 # Login, sessioner og adgangskontrol
 
-Status: Ikke startet.
+Status: I gang. PortSwiggers afsnit om adgangskontrol er læst, og de 13 labs i afsnittet er løst. Path traversal-labben er også løst. Loginøvelsen og afprøvning af adgangskontrollen i egen Java-kode mangler endnu.
 
 OWASP Top 10:2025: A01 Broken Access Control og A07 Authentication Failures.
 
@@ -18,10 +18,10 @@ Jeg skriver vurderinger af materialet i [ressourceundersøgelsen](../ressourcer/
 
 ## Læse om fejlene
 
-- [ ] Læse Description, How to prevent og Example attack scenarios i OWASP A01:2025.
-- [ ] Læse de samme afsnit i OWASP A07:2025 med fokus på loginforløb og sessioner.
-- [ ] Læse PortSwiggers eksempler på adgangskontrolfejl og siden om IDOR.
-- [ ] Undersøge adgang til andre brugeres data og adgang til funktioner for andre roller.
+- [x] Læse Description, How to prevent og Example attack scenarios i OWASP A01:2025.
+- [x] Læse de samme afsnit i OWASP A07:2025 med fokus på loginforløb og sessioner.
+- [x] Læse PortSwiggers afsnit Access control vulnerabilities and privilege escalation, herunder forklaringen af IDOR.
+- [x] Undersøge adgang til andre brugeres data og adgang til funktioner for andre roller i PortSwiggers labs.
 - [ ] Undersøge, hvordan et manglende trin i et loginforløb kan give adgang, før brugeren er færdig med at logge ind.
 - [ ] Læse de relevante dele af OWASP Authorization Cheat Sheet om kontrol af rettigheder på serveren.
 - [ ] Skrive med egne ord, hvordan fejlene kan opstå i en applikation, vi selv kunne have bygget.
@@ -30,6 +30,7 @@ Jeg vil have en forklaring af fejlene og nogle spørgsmål, jeg kan prøve af i 
 
 ## Undersøge materialerne
 
+- [x] Se hele Pluralsight-kurset OWASP: Broken Access Control. Jeg vurderer det som rigtig godt, især afsnittene om forsvar mod adgangskontrolfejl og de mere avancerede forsvar.
 - [ ] Se de relevante dele af Pluralsight-kurset om IDOR og forced browsing.
 - [ ] Undersøge WebGoats opsætning og finde en relevant øvelse om adgangskontrol.
 - [ ] Sammenholde forklaringerne fra OWASP, PortSwigger og Pluralsight.
@@ -39,15 +40,29 @@ Her vurderer jeg materialerne. Selve løsningen af øvelserne hører til næste 
 
 ## Afprøve øvelserne
 
-- [ ] Løse PortSwigger-labben User ID controlled by request parameter.
+- [x] Løse en simpel path traversal-lab og undersøge egen Java-applikation. Jeg fandt ikke et hul i mine forsøg, men undersøgelsen førte til opdagelsen af root som containerens standardbruger.
+- [x] Løse PortSwigger-labben User ID controlled by request parameter, with unpredictable user IDs. GUID'er gør ID'er sværere at gætte, men erstatter ikke adgangskontrol.
+- [x] Løse de øvrige labs i adgangskontrolafsnittet, i alt 13. Min vurdering af træningen og overførslen til egne projekter ligger i ressourcenoterne.
 - [ ] Løse PortSwigger-labben 2FA simple bypass og forklare, hvad der mangler i kontrollen af loginforløbet.
 - [ ] Gemme relevante requests og resultater, så jeg kan vise fejlene igen.
 - [ ] Forklare, hvilken kontrol der mangler, og hvad konsekvensen er.
 - [ ] Notere tidsforbrug, problemer med opsætning og den hjælp, jeg bruger.
 
-Jeg starter med de to PortSwigger-øvelser. Derefter kan jeg vælge en ekstra variant: en rolleoplysning, brugeren kan ændre, et forløb med manglende kontrol på ét trin eller en IDOR-øvelse i WebGoat eller TryHackMe. Jeg behøver ikke prøve alle platformene.
+Jeg har nu prøvet flere varianter af adgangskontrolfejl. Næste skridt er at undersøge en konkret funktion i mit eget Java-projekt og gennemføre 2FA simple bypass.
 
 Jeg bruger mit lokale øvelsesmiljø eller platformens labs til afprøvningen.
+
+### Afgrænset undersøgelse af FOG Carport
+
+Jeg bruger [testopskriften i de faglige noter](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-fog-carport) og [Excel-skabelonen](../emner/adgangskontrol/fog-adgangskontrol.xlsx) til at overføre øvelserne til mit eget projekt. Skabelonen er oprettet; reglerne er forslag, og testene er endnu ikke kørt.
+
+- [ ] Udfylde testmiljø, version eller commit og afgrænsning i regnearket.
+- [ ] Bekræfte adgangsreglerne for kundeprofiler, ordrer og administratorhandlinger mod projektets krav.
+- [ ] Oprette to testkunder med hver sin ordre og en administratorkonto, hvis rollen findes.
+- [ ] Finde de faktiske requests i Burp og erstatte skabelonens eksempelstier og ID'er.
+- [ ] Teste tilladt adgang, adgang uden login, adgang til andres data og adgang til administratorfunktioner.
+- [ ] Gemme anonymiseret evidens og forbinde eventuelle fund med test-ID'er.
+- [ ] Genteste rettelser og beskrive, hvad undersøgelsen dækker, og hvad der stadig mangler.
 
 ## Lave og teste en rettelse i Java
 
