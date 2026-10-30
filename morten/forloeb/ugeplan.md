@@ -6,6 +6,14 @@ Den samlede ramme er 20 timer. Jeg arbejder med to samlede forløb: login og adg
 
 Forløbene tager fat på A01 og A07 samt A03 og A02 fra OWASP Top 10:2025. Det er en første undersøgelse af udvalgte fejl og øvelser. Jeg har ikke gennemgået en hel kategori, bare fordi jeg har løst en enkelt opgave.
 
+## Systemet jeg undersøger løbende
+
+miseOS er valgt til den senere rapport. Jeg anvender det, jeg lærer, på udvalgte dele af projektet undervejs. FOG og platformenes labs kan bruges som supplerende øvelser. Jeg venter ikke til slutningen af læringsperioden med at afprøve miseOS.
+
+[Adgangskontrolmatrixen](../emner/adgangskontrol/miseos-adgangskontrol.xlsx) har et afgrænset startsæt på 12 tests af profiler, råvareanmodninger, roller og menuadgang. De øvrige tests er kandidater, og testene er endnu ikke kørt. Jeg tilpasser omfanget til ugens 20 timer; ugeplanen er ikke en plan for at gennemføre alle matrixens ruter.
+
+Min første milepæl er et dokumenteret forsøg med egen råvareanmodning, en anden brugers anmodning og adgang uden login. Jeg skal kunne forklare resultatet ud fra miseOS-koden og gemme evidens med test-ID, dato og version.
+
 ## Det jeg vil have ud af ugen
 
 Jeg vil vise en adgangskontrolfejl og en fejl i et loginforløb. Jeg vil også undersøge en sårbar afhængighed og en usikker indstilling i et lokalt miljø. For hvert eksempel vil jeg forklare årsag, konsekvens og rettelse.
@@ -20,8 +28,8 @@ PHP2Shell er min case til opdateringsdelen. Jeg tager udgangspunkt i PHP-projekt
 - [x] Løse én IDOR-lab: User ID controlled by request parameter, with unpredictable user IDs.
 - [ ] Løse 2FA simple bypass.
 - [ ] Gemme relevante requests og resultater fra øvelserne.
-- [ ] Lave et lille Java-eksempel på fejlen og rettelsen.
-- [ ] Teste ejerens adgang og afvisning af en anden bruger.
+- [ ] Gennemføre de første adgangstests i miseOS og undersøge relevant Java-kode.
+- [ ] Teste ejerens adgang, en anden bruger og adgang uden login på råvareanmodninger.
 - [ ] Skrive en kort forklaring af årsag, konsekvens og rettelse.
 - [ ] Forklare rettelsen til loginøvelsen og forskellen mellem de to kategorier.
 

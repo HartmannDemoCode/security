@@ -1,6 +1,6 @@
 # Login, sessioner og adgangskontrol
 
-Status: I gang. Arbejdet med path traversal har ført til en undersøgelse af min egen Java-applikation og dens container.
+Status: I gang. miseOS er valgt til den løbende systemundersøgelse. Testmatrixen er tilpasset API-dokumentation og lokal kode, men testene er endnu ikke kørt. Tidligere FOG-forsøg er bevaret nedenfor.
 
 Her samler jeg det, jeg lærer om A01 Broken Access Control og A07 Authentication Failures, og det, jeg selv prøver af. Planen ligger i [forløbet](../forloeb/01-adgangskontrol.md), og vurderingen af materialerne ligger under [ressourcer](../ressourcer/adgangskontrol.md).
 
@@ -34,84 +34,111 @@ Noter fra Pluralsight-kurset **OWASP: Broken Access Control**, baseret på de se
 
 Det, jeg især tager med, er, at adgang skal tildeles bevidst og kontrolleres løbende. Et login er ikke i sig selv tilladelse til alle funktioner eller andre brugeres data. Jeg har endnu ikke afprøvet disse forsvar i et samlet kodeeksempel.
 
-## Systematisk test af adgangskontrol i FOG Carport
+## Systematisk test af adgangskontrol i miseOS
 
-Jeg bruger en adgangsmatrix til at beskrive, hvem der må gøre hvad, og en testlog til at dokumentere mine forsøg i Burp Suite. Det gør undersøgelsen afgrænset og mulig at gentage. Et Excel-ark er tilstrækkeligt til dette projekt; det afgørende er sammenhængen mellem krav, test, dokumentation og eventuel rettelse.
+miseOS er valgt som system til min undersøgelse og den senere rapport. Jeg vil undersøge det løbende, mens jeg lærer nye emner de næste syv uger. FOG er fortsat et tidligere øvelsesprojekt; mine allerede dokumenterede FOG-forsøg nedenfor er historik.
 
-[Download Excel-skabelonen til adgangskontrol i FOG](adgangskontrol/fog-adgangskontrol.xlsx).
+Jeg bruger en adgangsmatrix til at beskrive rettigheder og en testlog til at dokumentere konkrete forsøg i Burp Suite. Sammenhængen er krav → test → evidens → vurdering → eventuel forbedring → gentest. Jeg kan også dokumentere kontroller, der fungerer korrekt.
 
-Skabelonen har tre faner: **Afgrænsning**, **Adgangsmatrix** og **Testlog**. Den indeholder forslag til regler og tests, men ingen udførte testresultater. Jeg skal først bekræfte reglerne og tilpasse requests til min applikation.
+[Åbn Excel-matrixen til miseOS](adgangskontrol/miseos-adgangskontrol.xlsx).
 
-### Afgrænsning og testdata
+Regnearket har fire faner:
 
-Min første undersøgelse handler om brugeroplysninger og ordrer i FOG Carport. Jeg tester adgang uden login, adgang til en anden kundes data og adgang til administratorfunktioner. SQL injection, belastningstest og andre sårbarhedstyper indgår ikke i denne undersøgelse. Path traversal og containerrettigheder er beskrevet særskilt nedenfor og i noterne om sikker opsætning.
+| Fane | Indhold |
+| --- | --- |
+| Afgrænsning | Testmiljø, version, konti, testdata, arbejdsopskrift og statusoversigt. |
+| Adgangsmatrix | 94 registrerede HTTP-, SSE- og WebSocket-ruter fra lokal kode med rollekolonner og plads til bekræftelse af krav. |
+| Testlog | 55 foreslåede tests. De første 12 har prioriteten **Start**, resten **Næste** eller **Udvidelse**. |
+| Kilder og afklaringer | API-dokumentation, kodegrundlag og syv spørgsmål til forskelle mellem dokumentation, kode og testmiljø. |
 
-Jeg begynder i mit lokale miljø med egne testdata. Jeg noterer miljøets adresse, version eller commit og testdato i fanen Afgrænsning. Hvis jeg bruger `fog.corral.dk` som testmiljø, skal netop det miljø indgå i afgrænsningen. Adressen er ikke undersøgt som led i denne dokumentation.
+Der er endnu ikke udført sikkerhedstests fra dette ark. Metoder og stier kommer fra lokal kode, men jeg skal indsætte faktiske test-ID'er og bekræfte ønsket adfærd. Rollekolonnerne er ikke en uafhængig godkendelse af kodens regler.
 
-Jeg opretter to testkunder, A og B, med hver sin profil og ordre samt en administratorkonto, hvis den rolle findes i projektet. Jeg noterer de faktiske ID'er i arket. To kunder er nødvendige for at kontrollere ejerskab; én kunde og en administrator viser ikke alene, om kunder kan tilgå hinandens data.
+### Grundlag og afgrænsning
 
-### Adgangsmatrix: de forventede regler
+Planen er tilpasset [miseOS API-dokumentationen](https://corral.dk/docs/miseos-api-doc/) og den lokale Java-kode ved commit `8162c94` fra 5. juni 2026. Koden blev fundet under `Dokumenter/Development/School/Semester3/Portfolio/miseOS` på min skole-OneDrive. Den fulde lokale sti er noteret i regnearkets kildefane. Dokumentationen er læst den 30. oktober 2026; den kørende applikation kan være en anden version.
 
-Matrixen beskriver det, systemet skal tillade, før jeg undersøger, hvad det faktisk tillader. Her er et forslag, som skal bekræftes mod projektets krav:
+Jeg starter lokalt med egne testdata og afgrænser den første undersøgelse til:
 
-| Handling | Ikke logget ind | Kunde, egne data | Kunde, andres data | Administrator |
-| --- | --- | --- | --- | --- |
-| Se kundeprofil | Afvis | Tillad | Afvis | Tillad, hvis rollen har dette ansvar |
-| Redigere kundeprofil | Afvis | Tillad for tilladte profilfelter | Afvis | Afklar tilladte felter og ansvar |
-| Se en ordre | Afvis | Tillad | Afvis | Tillad, hvis rollen har dette ansvar |
-| Se ordreoversigt | Afvis | Kun egne ordrer | Ingen andres ordrer | Afklar, om rollen må se alle ordrer |
-| Ændre ordrestatus | Afvis | Afklar kundens tilladte handlinger | Afvis | Afklar tilladte statusskift |
-| Ændre brugerrolle | Afvis | Afvis | Afvis | Afklar, hvem der må administrere roller |
+- Egen brugerprofil og udvalgte forskelle mellem køkkenroller.
+- Læsning, ændring og godkendelse af råvareanmodninger (`ingredient-requests`).
+- Offentlig adgang til publicerede menuer og beskyttelse af kladder (`weekly-menus`).
 
-Jeg skelner mellem tre typer kontrol:
+Retforslag, indkøbslister, takeaway og notifikationer er mulige udvidelser. At ruterne står i arket betyder ikke, at jeg har testet dem eller har valgt dem alle til rapporten. SQL injection, belastningstest, afhængigheder og deploymentkonfiguration indgår ikke i denne adgangskontrolmatrix.
 
-- **Uden login:** Kan en besøgende hente beskyttede data eller udføre en beskyttet handling?
-- **Horisontal adgangskontrol:** Kan kunde A hente eller ændre kunde B's data?
-- **Vertikal adgangskontrol:** Kan en kunde udføre en handling, der kræver en anden rolle?
+Jeg noterer faktisk base-URL inklusive `/api/v1`, version eller commit og testdato før forsøgene. Dokumentationens index angiver `https://miseos-api.corral.dk/api/v1`, mens flere eksempler bruger `https://miseos.corral.dk/api/v1`. Jeg skal vælge mit faktiske testmiljø; ingen af de publicerede API-hosts er testet som led i denne planlægning.
 
-Jeg tester også den tilladte adgang. Hvis en request fejler for alle brugere, viser det ikke alene, at adgangskontrollen virker.
+### Roller, ejerskab og tilstand
 
-### Testlog: én konkret test pr. række
+miseOS har fire brugerroller: `CUSTOMER`, `LINE_COOK`, `SOUS_CHEF` og `HEAD_CHEF`. `KITCHEN_STAFF` er en gruppe for de tre køkkenroller, og `ANYONE` betyder offentlig adgang. Nyregistrering giver ifølge dokumentation og lokal service rollen `CUSTOMER`.
 
-En adresse som `/users/1` hører til i testloggen sammen med HTTP-metode, bruger, forventet resultat og faktisk resultat. Samme sti kan have forskellige adgangsregler for læsning og ændring. Jeg finder de faktiske requests i Burps HTTP history ved at bruge applikationen normalt; jeg antager ikke, at eksemplernes stier findes i FOG.
+Jeg må ikke behandle SOUS_CHEF og HEAD_CHEF som samme rolle. Eksempelvis er brugerlisten og rolleændringer forbeholdt HEAD_CHEF i de læste ruter, mens begge ledelsesroller kan godkende råvareanmodninger.
 
-Eksempel med kunde A som bruger 1 og ejer af ordre 101 samt kunde B som bruger 2 og ejer af ordre 102:
+| Handling | Uden login | CUSTOMER | LINE_COOK | SOUS_CHEF | HEAD_CHEF |
+| --- | --- | --- | --- | --- | --- |
+| `GET /users/me` | Afvis | Afklar dokumentationsforskel | Egen profil | Egen profil | Egen profil |
+| `GET /users` | Afvis | Afvis | Afvis | Afvis | Tillad |
+| `GET /ingredient-requests/{id}` | Afvis | Afvis | Kun egne | Tillad | Tillad |
+| `PUT /ingredient-requests/{id}` | Afvis | Afvis | Egne, i tilladt tilstand | Tilladt tilstand | Tilladt tilstand |
+| `PATCH /ingredient-requests/{id}/approve` | Afvis | Afvis | Afvis | Tilladt tilstand | Tilladt tilstand |
+| `PATCH /users/{id}/role` | Afvis | Afvis | Afvis | Afvis | Tillad |
+| `GET /weekly-menus/by-week` | Kun PUBLISHED | Kun PUBLISHED | Kun PUBLISHED | Afklar brug af adminroute | Afklar brug af adminroute |
+| `GET /weekly-menus/by-week/admin` | Afvis | Afvis | Afvis | DRAFT og PUBLISHED | DRAFT og PUBLISHED |
 
-| Test-ID | Logget ind som | Request | Forventet resultat | Status |
-| --- | --- | --- | --- | --- |
-| BAC-01 | Kunde A | `GET /users/1` | Egen profil vises | Ikke kørt |
-| BAC-02 | Kunde A | `GET /users/2` | Adgang til B's profil afvises | Ikke kørt |
-| BAC-03 | Kunde A | `GET /orders/101` | Egen ordre vises | Ikke kørt |
-| BAC-04 | Kunde A | `GET /orders/102` | Adgang til B's ordre afvises | Ikke kørt |
-| BAC-05 | Ingen | `GET /orders/101` | Adgang afvises uden gyldig session | Ikke kørt |
+Tabellen er et arbejdsgrundlag ud fra læste kilder. Jeg bekræfter de tilsigtede regler, før jeg bedømmer tests. En rolle, der må kalde en route, må ikke nødvendigvis arbejde på alle objekter eller i alle tilstande.
 
-ID'erne og stierne er eksempler. Excel-arket indeholder også forslag til test af ændringer, ordreoversigter, administratorfunktioner og adgang efter logout. Ændringstests kræver, at jeg først finder den rigtige request og afklarer den forventede adgang.
+Jeg opretter to LINE_COOK-testbrugere, A og B, med hver deres råvareanmodninger samt én SOUS_CHEF og én HEAD_CHEF. Til stationstests bruger jeg to stationer med hver sin aktive ret. CUSTOMER-konti og takeaway-ordrer oprettes først, hvis jeg vælger den udvidelse.
 
-Jeg udfylder faktisk resultat, statuskode, evidens, testdato, testet version, eventuel fejlreference og gentest. Jeg bruger status **Bestået**, når resultatet matcher det bekræftede krav, **Fejlet**, når det ikke matcher, og **Blokeret**, når forudsætningerne mangler. Et ubekræftet krav kan ikke bruges til at erklære en test bestået.
+### Første 12 tests
 
-### Opskrift i Burp Suite: kunde A forsøger at læse B's ordre
+Jeg filtrerer Testlog på **Prioritet = Start**. Eksempelvis:
 
-1. Opret de to testkunder og deres ordrer. Bekræft, at B kan se sin egen ordre.
-2. Log ind som A, og åbn A's egen ordre. Find requesten i **Proxy → HTTP history**, og vælg **Send to Repeater**.
-3. Kontrollér, at requesten bruger A's session eller token. Send den uændret, og bekræft, at A kan læse sin egen ordre.
-4. Behold A's session, og skift kun ordre-ID'et til B's kendte testordre. ID'et kan ligge i stien, query-parametre eller requestens body.
-5. Send requesten, og undersøg, om B's beskyttede ordreoplysninger bliver returneret.
-6. Dokumentér forsøget under BAC-04 med faktisk request, response, dato og version. Jeg kan navngive Repeater-fanen med samme test-ID.
-7. Ved en fejl undersøger jeg kontrollen i Java-koden, retter den og gentester både den afviste og den tilladte adgang.
+| Test-ID | Bruger | Request relativt til base-URL | Forventning efter bekræftelse af krav |
+| --- | --- | --- | --- |
+| MISE-01 | LINE_COOK A | `GET /users/me` | Egen profil vises. |
+| MISE-03 | LINE_COOK A | `GET /ingredient-requests/<REQUEST_A>` | A's egen anmodning vises. |
+| MISE-04 | LINE_COOK A | `GET /ingredient-requests/<REQUEST_B>` | B's anmodning udleveres ikke. |
+| MISE-08 | LINE_COOK A | `PATCH /ingredient-requests/<REQUEST_A>/approve` | Afvis; anmodningen bliver ikke godkendt. |
+| MISE-10 | SOUS_CHEF | `PATCH /users/<COOK_A>/role` | Afvis; brugerens rolle ændres ikke. |
+| MISE-12 | Ingen | `GET /weekly-menus/by-week?week=<DRAFT_WEEK>&year=<YEAR>` | Kladdens data udleveres ikke. |
 
-Til test uden login fjerner jeg alle oplysninger, der autentificerer requesten. Ved test efter logout genbruger jeg den gamle session efter et faktisk logout. Hvis en request afvises på grund af eksempelvis et ugyldigt CSRF-token, har jeg endnu ikke isoleret kontrollen af rolle eller ejerskab.
+Pladsholdere som `<REQUEST_A>` erstattes med kendte ID'er fra mine testdata. Body-eksempler og datoer tilpasses også. Testloggen indeholder metode, sti/query, body eller ændring, forudsætninger, forventning, faktisk resultat, evidens og gentest. Alle tests begynder som **Ikke kørt**, og ingen krav er endnu markeret bekræftede.
 
-Jeg vurderer både indhold og effekt. En `200` kan være en login-side, og en fejlstatus er ikke i sig selv bevis for, at ingen data er ændret. Ved ændringstests kontrollerer jeg derfor også ressourcens tilstand bagefter. En afvist handling må hverken udlevere beskyttede data eller gennemføre ændringen.
+### Opskrift i Burp: A forsøger at læse B's råvareanmodning
 
-### Placering af dokumentation og begrænsninger
+1. Opret en anmodning for A og en for B. Bekræft, at begge kan læse deres egen. Notér de faktiske ID'er som REQUEST_A og REQUEST_B.
+2. Log ind som A. Find `GET /ingredient-requests/<REQUEST_A>` i **Proxy → HTTP history**, og vælg **Send to Repeater**.
+3. Kontrollér, at requesten har A's `Authorization: Bearer <token>`. Send den uændret, og dokumentér den tilladte adgang som MISE-03.
+4. Behold A's token, og skift kun anmodningens ID til REQUEST_B. Send requesten igen.
+5. Undersøg svaret for B's beskyttede oplysninger. Dokumentér faktisk status, indhold, dato, version og evidens under MISE-04.
+6. Ved en fejl undersøger jeg kontrollen i miseOS-koden. En eventuel rettelse gentestes med både ejerens tilladte adgang og den anden brugers afviste adgang.
 
-Regnearket ligger sammen med disse noter i `adgangskontrol/fog-adgangskontrol.xlsx`. Jeg kan gemme anonymiseret evidens i eksempelvis `adgangskontrol/evidence/BAC-04/` og skrive stien i testloggen. Jeg fjerner sessionscookies, tokens og personoplysninger fra materiale, jeg deler eller afleverer.
+Ved ændringstests gemmer jeg også ressourcens tilstand før og efter. Jeg bruger gyldige datoer, en gyldig body og en passende tilstand, så en valideringsfejl ikke skjuler kontrollen af rolle eller ejerskab. Separate disponible testressourcer hindrer, at godkendelse eller sletning ødelægger forudsætningerne for næste forsøg.
 
-For hvert fund forbinder jeg test-ID'et med sårbarhedsanalysen nedenfor: forventet adgang, faktisk adgang, konsekvens, årsag i Java-koden, rettelse og gentest. Senere kan relevante kontroller blive automatiserede integrationstests.
+Ved test uden login fjerner jeg alle autentifikationsoplysninger. Udløbne JWT'er testes særskilt med deres faktiske udløbstid. Jeg har ikke fundet en logout-route i den læste SecurityRoute; en fremtidig logout-test kræver afklaring af, om kravet handler om klientens token eller serverinvalidering.
 
-Når undersøgelsen er færdig, beskriver jeg de konkrete funktioner, roller og handlinger, jeg har testet. Beståede tests i den afgrænsede matrix er ikke en konklusion om, at hele applikationen er fri for adgangskontrolfejl. Der er endnu ikke kørt tests fra denne matrix.
+### Afklaringer før jeg konkluderer
 
-Metodens kilder og vejledninger ligger under [materiale til systematisk adgangskontroltest](../ressourcer/adgangskontrol.md#systematisk-adgangskontroltest-i-eget-projekt).
+Kilder og afklaringer indeholder blandt andet:
+
+- **CUSTOMER og egen profil:** Dokumentationens endpointtabel angiver KITCHEN_STAFF, mens lokal `UserRoute` også tillader CUSTOMER på `/users/me`.
+- **Andres email og password:** Dokumentationen siger kun egne felter, mens `UserService.validateOwnershipOrAdmin` også accepterer HEAD_CHEF. Passwordændring kræver stadig aktuelt password. Den ønskede administratoradgang skal afklares.
+- **Menuer:** Lokal kode har en særskilt `/weekly-menus/by-week/admin`. Den offentlige route springer autentifikation over i den læste SecurityController. Jeg tester offentlig beskyttelse af DRAFT og ledelsesadgang hver for sig.
+- **Indkøbslister:** Dokumentationen viser `PATCH /shopping-lists/{id}/items/ordered`, mens lokal route bruger `PUT /shopping-lists/{id}/items/order-all`.
+- **WebSocket:** Dokumentationen kræver KITCHEN_STAFF, mens den lokale WS-route bruger manuel JWT-kontrol uden en Role-deklaration. Jeg skal afklare og eventuelt teste kunders adgang og levering til den rigtige modtager.
+
+Disse observationer er ikke påviste sårbarheder. Jeg fastlægger den ønskede adfærd og testversionen, før jeg vurderer et resultat som en fejl.
+
+### Evidens og begrænsninger
+
+Regnearket ligger i `adgangskontrol/miseos-adgangskontrol.xlsx`. Jeg kan placere anonymiseret evidens i eksempelvis `adgangskontrol/evidence/MISE-04/`. Tokens, cookies, passwords og personoplysninger fjernes fra materiale, der deles eller afleveres.
+
+Jeg bruger **Bestået**, når resultatet matcher et bekræftet krav, **Fejlet**, når det ikke matcher, og **Blokeret**, når forudsætningerne mangler. Uafklarede krav og en forkert route giver ikke en bestået adgangstest. HTTP-status alene er heller ikke tilstrækkelig: Jeg undersøger både indhold og faktisk effekt.
+
+For hvert fund forbinder jeg test-ID med konsekvens, årsag i koden, eventuel rettelse og gentest. Jeg bevarer det oprindelige resultat, når jeg udfylder gentestens dato, version og resultat. Senere kan relevante kontroller blive automatiserede integrationstests.
+
+Min konklusion skal beskrive de faktisk testede roller, ressourcer, handlinger og versioner. At de udvalgte tests består viser ikke, at hele miseOS er fri for adgangskontrolfejl. Der er endnu ikke udført tests fra denne matrix.
+
+Metodens kilder ligger under [materiale til systematisk adgangskontroltest](../ressourcer/adgangskontrol.md#systematisk-adgangskontroltest-i-eget-projekt).
 
 ## Afprøvninger
 
@@ -163,11 +190,6 @@ Efter at have læst PortSwiggers adgangskontrolafsnit og løst de 13 labs er jeg
 
 ### Næste undersøgelse i mit eget projekt
 
-Jeg vil vælge én funktion, eksempelvis visning eller ændring af en ordre, og undersøge den i et lokalt miljø med egne testdata:
+Jeg begynder med de 12 Start-tests i miseOS-matrixen. Min første milepæl er at dokumentere, om en LINE_COOK kan læse sin egen råvareanmodning, bliver afvist fra en anden brugers og bliver afvist uden login. Jeg undersøger derefter kontrollen i `IngredientRequestRoute`, `IngredientRequestService` og autentifikationslaget.
 
-- Kan bruger A hente eller ændre bruger B's ordre ved at udskifte et ID i requesten?
-- Kan en almindelig bruger kalde en adminfunktion direkte, selv om knappen ikke vises?
-- Kan en profilopdatering ændre en rolle eller andre felter, brugeren ikke bør kunne ændre?
-- Hvor kontrollerer Java-koden den aktuelle bruger, rollen og ejerskabet af ressourcen?
-
-Det er forslag til næste afprøvning. Jeg har endnu ikke dokumenteret resultater fra disse kontroller i mine egne projekter. Et gyldigt login eller en rollekontrol er ikke i sig selv en kontrol af, hvem der ejer den konkrete ordre.
+Undersøgelsen er planlagt, men ikke udført. De øvrige tests er kandidater, jeg kan vælge, mens jeg lærer videre. Et gyldigt login eller en rollekontrol er ikke i sig selv kontrol af ejerskab, station eller tilstand.

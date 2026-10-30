@@ -32,13 +32,21 @@ Næste skridt er at undersøge én konkret funktion i et eget projekt med to bru
 
 ## Systematisk adgangskontroltest i eget projekt
 
-Jeg vil bruge disse vejledninger til at planlægge tests af FOG Carport med forskellige brugere, roller og ejerskab af data:
+Jeg vil bruge disse vejledninger til at planlægge tests af miseOS med forskellige brugere, roller og ejerskab af data:
 
 - [OWASP WSTG – Testing for Bypassing Authorization Schema](https://owasp.github.io/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/05-Authorization_Testing/02-Testing_for_Bypassing_Authorization_Schema): kontrol af adgang uden login, efter logout og med forskellige roller.
 - [OWASP WSTG – Insecure Direct Object References](https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/05-Authorization/04-Insecure_Direct_Object_References/): kortlægning af objektreferencer og test med flere brugere, der ejer forskellige data.
 - [PortSwigger – Burp Repeater](https://portswigger.net/burp/documentation/desktop/tools/repeater): ændring og gentagen afsendelse af requests, så jeg kan sammenligne den tilladte og den afviste adgang.
 
-[Min testopskrift og afgrænsning](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-fog-carport) ligger i de faglige noter sammen med [Excel-skabelonen](../emner/adgangskontrol/fog-adgangskontrol.xlsx). Regnearket adskiller forventede adgangsregler fra konkrete forsøg og testresultater. Der er endnu ikke udført tests fra matrixen eller skrevet en vurdering af vejledningerne efter praktisk brug i FOG.
+[Min testopskrift og afgrænsning](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-miseos) ligger i de faglige noter sammen med [Excel-skabelonen](../emner/adgangskontrol/miseos-adgangskontrol.xlsx). Regnearket adskiller forventede adgangsregler fra konkrete forsøg og testresultater. Der er endnu ikke udført tests fra matrixen eller skrevet en vurdering af vejledningerne efter praktisk brug i miseOS.
+
+### miseOS som gennemgående system
+
+[miseOS API-dokumentation](https://corral.dk/docs/miseos-api-doc/) beskriver ressourcer, requests, roller og fejltilfælde. Planen er sammenholdt med lokal Java-kode ved commit `8162c94` fra 5. juni 2026. Der er endnu ikke kørt adgangskontroltests som led i undersøgelsen.
+
+Matrixen indeholder rollerne CUSTOMER, LINE_COOK, SOUS_CHEF og HEAD_CHEF samt offentlige requests. Jeg starter med profiler, råvareanmodninger og menuadgang. Kilder og afklaringer i Excel-arket beskriver blandt andet forskelle om kundeprofiler, administratorens feltændringer, menuernes adminroute, en indkøbslisteroute og WebSocket-roller.
+
+Dokumentation og kode er grundlag for at stille testspørgsmål; forskellene er ikke i sig selv konstaterede sårbarheder. Jeg bekræfter de ønskede regler og den faktisk kørende version, før jeg bedømmer resultater. Tidligere FOG-forsøg bevares som øvelser i de faglige noter.
 
 ## TryHackMe som alternativ
 

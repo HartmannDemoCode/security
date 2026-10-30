@@ -52,30 +52,30 @@ Jeg har nu prøvet flere varianter af adgangskontrolfejl. Næste skridt er at un
 
 Jeg bruger mit lokale øvelsesmiljø eller platformens labs til afprøvningen.
 
-### Afgrænset undersøgelse af FOG Carport
+### Afgrænset undersøgelse af miseOS
 
-Jeg bruger [testopskriften i de faglige noter](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-fog-carport) og [Excel-skabelonen](../emner/adgangskontrol/fog-adgangskontrol.xlsx) til at overføre øvelserne til mit eget projekt. Skabelonen er oprettet; reglerne er forslag, og testene er endnu ikke kørt.
+Jeg bruger [testopskriften i de faglige noter](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-miseos) og [Excel-skabelonen](../emner/adgangskontrol/miseos-adgangskontrol.xlsx) til at overføre øvelserne til mit eget projekt. Matrixen er tilpasset miseOS API-dokumentation og lokal kode ved commit `8162c94`. Den har 94 ruter og 55 foreslåede tests. Jeg starter med de 12 Start-tests; alle krav skal bekræftes, og ingen tests er endnu kørt. Jeg undersøger miseOS løbende under læringen frem mod rapporten.
 
 - [ ] Udfylde testmiljø, version eller commit og afgrænsning i regnearket.
-- [ ] Bekræfte adgangsreglerne for kundeprofiler, ordrer og administratorhandlinger mod projektets krav.
-- [ ] Oprette to testkunder med hver sin ordre og en administratorkonto, hvis rollen findes.
-- [ ] Finde de faktiske requests i Burp og erstatte skabelonens eksempelstier og ID'er.
-- [ ] Teste tilladt adgang, adgang uden login, adgang til andres data og adgang til administratorfunktioner.
-- [ ] Gemme anonymiseret evidens og forbinde eventuelle fund med test-ID'er.
+- [ ] Bekræfte adgangsreglerne for profiler, råvareanmodninger, roller og menuers DRAFT/PUBLISHED-tilstand. Afklare forskelle mellem dokumentation og kode.
+- [ ] Oprette to LINE_COOK-brugere med hver deres råvareanmodninger samt særskilte SOUS_CHEF- og HEAD_CHEF-konti.
+- [ ] Kontrollere miseOS-testversionens requests i Burp og udfylde pladsholdere, ID'er, datoer og bodies i matrixen.
+- [ ] Gennemføre de 12 Start-tests og dokumentere både tilladt adgang, afvisninger og beskyttelse af DRAFT-data.
+- [ ] Gemme anonymiseret evidens og forbinde resultater og eventuelle fund med MISE-test-ID'er.
 - [ ] Genteste rettelser og beskrive, hvad undersøgelsen dækker, og hvad der stadig mangler.
 
-## Lave og teste en rettelse i Java
+## Lave og teste en forbedring i miseOS
 
-- [ ] Lave et lille eksempel med to brugere og dokumenter, der tilhører hver sin bruger.
-- [ ] Vise fejlen, hvor et ændret dokument-ID giver adgang til en anden brugers dokument.
-- [ ] Rette kontrollen på serveren, så den tager højde for, hvem der ejer dokumentet.
+- [ ] Bruge miseOS med to testbrugere og råvareanmodninger, der tilhører hver sin bruger.
+- [ ] Dokumentere forventet og faktisk adgang med konkrete requests. Også dokumentere kontroller, der fungerer.
+- [ ] Vælge en begrundet forbedring ud fra undersøgelsen og vise relevant kode før og efter. Ved en ejerskabsfejl rette kontrollen på serveren.
 - [ ] Teste, at ejeren har adgang, mens en anden bruger bliver afvist.
 - [ ] Teste, at en request uden en gyldig bruger bliver afvist.
 - [ ] Gennemgå login og sessioner i det valgte framework og udvælge en relevant kontrol, jeg kan afprøve i samme eksempel.
 - [ ] Forklare rettelsen til 2FA-labben uden at bygge et helt nyt login-system.
 - [ ] Gemme resultatet før og efter rettelsen.
 
-Jeg holder eksemplet lille og bruger en kendt Java-stack. Jeg behøver ikke en frontend eller et nyt login-system. Hvis noget kun bliver en skitse, skriver jeg, at det ikke er afprøvet.
+Jeg bruger miseOS som gennemgående Java-projekt og holder de valgte funktioner afgrænsede. Jeg behøver ikke en ny frontend eller et nyt login-system. FOG og platformenes labs kan bruges som supplerende øvelser. Hvis noget kun bliver en skitse, skriver jeg, at det ikke er afprøvet.
 
 ## Samle fund og vurdere materialerne
 
