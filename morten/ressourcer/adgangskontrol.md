@@ -1,6 +1,6 @@
 # Materiale til login, sessioner og adgangskontrol
 
-Status: I gang. OWASP A01 og A07 er læst, Pluralsight-kurset OWASP: Broken Access Control er gennemført, og PortSwiggers afsnit om adgangskontrol er læst med de 13 tilhørende labs løst.
+Status: I gang. OWASP A01 og A07 er læst, Pluralsight-kurset OWASP: Broken Access Control er gennemført, og PortSwiggers afsnit om adgangskontrol er læst med de 13 tilhørende labs løst. Campfires A01 - Broken Access Control, basic-forløb og grundlæggende sikkerhedsgennemgang er også gennemført.
 
 Her samler jeg mine noter og vurderinger af materialer om login, sessioner og adgangskontrol.
 
@@ -28,7 +28,7 @@ Det var fin træning i broken access control og i at bruge Burp Suite til at æn
 
 Det er stadig uklart for mig, hvordan jeg overfører eksemplerne til mine egne Java-projekter og vurderer, om de har tilsvarende huller. Nogle af eksemplerne virker konstruerede, og jeg er i tvivl om, hvor ofte de opstår i praksis. Jeg mangler at forbinde øvelserne med den kode og opsætning, jeg selv bruger.
 
-Næste skridt er at undersøge én konkret funktion i et eget projekt med to brugere og forskellige roller. Det skal vise, hvor adgangskontrollen faktisk sker. Authentication og 2FA simple bypass mangler endnu at blive gennemført.
+Jeg vil først lære mere teori og afprøve den i øvelsesmiljøer. Næste skridt er at undersøge WebGoats opsætning og vælge en relevant adgangskontroløvelse. Authentication og 2FA simple bypass mangler også endnu. Til sidst bruger jeg det, jeg har lært, til at undersøge adgangskontrollen i miseOS med forskellige brugere og roller.
 
 ## Systematisk adgangskontroltest i eget projekt
 
@@ -40,7 +40,7 @@ Jeg vil bruge disse vejledninger til at planlægge tests af miseOS med forskelli
 
 [Min testopskrift og afgrænsning](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-miseos) ligger i de faglige noter sammen med [Excel-skabelonen](../emner/adgangskontrol/miseos-adgangskontrol.xlsx). Regnearket adskiller forventede adgangsregler fra konkrete forsøg og testresultater. Der er endnu ikke udført tests fra matrixen eller skrevet en vurdering af vejledningerne efter praktisk brug i miseOS.
 
-### miseOS som gennemgående system
+### miseOS som afsluttende undersøgelse
 
 [miseOS API-dokumentation](https://corral.dk/docs/miseos-api-doc/) beskriver ressourcer, requests, roller og fejltilfælde. Planen er sammenholdt med lokal Java-kode ved commit `8162c94` fra 5. juni 2026. Der er endnu ikke kørt adgangskontroltests som led i undersøgelsen.
 
@@ -84,6 +84,25 @@ Min vurdering efter at have set afsnittene:
 Rigtig godt til at få en grund forståelse af, hvad adgangskontrol er, og hvordan man kan finde og rette fejl. Jeg vil især bruge videoerne til at forklare årsagen til fejlen.
 
 A:11 next steps -> undersøg nemmere, om der er andre relevante afsnit.
+
+## Campfire
+
+Jeg har gennemført **A01 - Broken Access Control**. Kurset står som **Completed** med **100 XP**.
+
+Kursusbeskrivelsen angiver følgende emner:
+
+- Access Control Vulnerabilities.
+- Secure Coding Practices.
+- Exploitation Techniques.
+- Prevention Strategies.
+
+Ifølge beskrivelsen kombinerer kurset teori og praktiske øvelser om at identificere, udnytte og forebygge adgangskontrolfejl.
+
+Jeg har også gennemført Campfires basic-forløb og deres grundlæggende sikkerhedsgennemgang. De præcise kursusnavne og links er endnu ikke noteret.
+
+Min vurdering efter gennemførelsen:
+
+Jeg synes, materialet var godt til begynderniveau. Jeg kunne mærke, at min eksisterende viden gjorde det nemmere at gennemføre.
 
 ## WebGoat
 

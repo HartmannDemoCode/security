@@ -30,6 +30,7 @@ Jeg bruger navnet forløb, fordi arbejdet godt kan fortsætte over flere uger. O
 
 Hvad har jeg lært og selv prøvet? Her ligger mine faglige forklaringer, afprøvninger, kodeeksempler og fund.
 
+- [Min fremgangsmåde til sikkerhedsundersøgelser](emner/fremgangsmaade.md) – huskeliste fra øvelserne til konkrete tests, koderettelser og gentest.
 - [Login, sessioner og adgangskontrol](emner/adgangskontrol.md)
 - [Afhængigheder, sikker opsætning og PHP2Shell](emner/afhaengigheder.md)
 

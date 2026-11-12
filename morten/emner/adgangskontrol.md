@@ -1,8 +1,10 @@
 # Login, sessioner og adgangskontrol
 
-Status: I gang. miseOS er valgt til den løbende systemundersøgelse. Testmatrixen er tilpasset API-dokumentation og lokal kode, men testene er endnu ikke kørt. Tidligere FOG-forsøg er bevaret nedenfor.
+Status: I gang med teori og øvelser. miseOS er valgt til den afsluttende systemundersøgelse. Testmatrixen er tilpasset API-dokumentation og lokal kode, men testene er endnu ikke kørt. Tidligere FOG-forsøg er bevaret nedenfor.
 
 Her samler jeg det, jeg lærer om A01 Broken Access Control og A07 Authentication Failures, og det, jeg selv prøver af. Planen ligger i [forløbet](../forloeb/01-adgangskontrol.md), og vurderingen af materialerne ligger under [ressourcer](../ressourcer/adgangskontrol.md).
+
+[Min fremgangsmåde til sikkerhedsundersøgelser](fremgangsmaade.md) samler huskepunkterne fra øvelserne i en rækkefølge, jeg kan følge ved nye tests. De konkrete miseOS-tests og resultater hører til i matrixen nedenfor.
 
 ## Identitet og adgang
 
@@ -36,7 +38,7 @@ Det, jeg især tager med, er, at adgang skal tildeles bevidst og kontrolleres l�
 
 ## Systematisk test af adgangskontrol i miseOS
 
-miseOS er valgt som system til min undersøgelse og den senere rapport. Jeg vil undersøge det løbende, mens jeg lærer nye emner de næste syv uger. FOG er fortsat et tidligere øvelsesprojekt; mine allerede dokumenterede FOG-forsøg nedenfor er historik.
+miseOS er valgt som system til min afsluttende undersøgelse og den senere rapport. Først vil jeg lære teorien og afprøve den i øvelsesmiljøer. Til sidst anvender jeg det, jeg har lært, på miseOS. FOG er fortsat et tidligere øvelsesprojekt; mine allerede dokumenterede FOG-forsøg nedenfor er historik.
 
 Jeg bruger en adgangsmatrix til at beskrive rettigheder og en testlog til at dokumentere konkrete forsøg i Burp Suite. Sammenhængen er krav → test → evidens → vurdering → eventuel forbedring → gentest. Jeg kan også dokumentere kontroller, der fungerer korrekt.
 
@@ -190,6 +192,6 @@ Efter at have læst PortSwiggers adgangskontrolafsnit og løst de 13 labs er jeg
 
 ### Næste undersøgelse i mit eget projekt
 
-Jeg begynder med de 12 Start-tests i miseOS-matrixen. Min første milepæl er at dokumentere, om en LINE_COOK kan læse sin egen råvareanmodning, bliver afvist fra en anden brugers og bliver afvist uden login. Jeg undersøger derefter kontrollen i `IngredientRequestRoute`, `IngredientRequestService` og autentifikationslaget.
+Når jeg har arbejdet med teori og øvelser, begynder jeg den afsluttende undersøgelse med de 12 Start-tests i miseOS-matrixen. Min første milepæl i miseOS er at dokumentere, om en LINE_COOK kan læse sin egen råvareanmodning, bliver afvist fra en anden brugers og bliver afvist uden login. Jeg undersøger derefter kontrollen i `IngredientRequestRoute`, `IngredientRequestService` og autentifikationslaget.
 
-Undersøgelsen er planlagt, men ikke udført. De øvrige tests er kandidater, jeg kan vælge, mens jeg lærer videre. Et gyldigt login eller en rollekontrol er ikke i sig selv kontrol af ejerskab, station eller tilstand.
+Undersøgelsen er planlagt, men ikke udført. De øvrige tests er kandidater, jeg kan vælge til den afsluttende undersøgelse ud fra det, jeg har lært. Et gyldigt login eller en rollekontrol er ikke i sig selv kontrol af ejerskab, station eller tilstand.

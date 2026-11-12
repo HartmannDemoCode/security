@@ -1,10 +1,10 @@
 # Login, sessioner og adgangskontrol
 
-Status: I gang. PortSwiggers afsnit om adgangskontrol er læst, og de 13 labs i afsnittet er løst. Path traversal-labben er også løst. Loginøvelsen og afprøvning af adgangskontrollen i egen Java-kode mangler endnu.
+Status: I gang. PortSwiggers afsnit om adgangskontrol er læst, og de 13 labs i afsnittet er løst. Path traversal-labben er også løst. Campfires A01 - Broken Access Control, basic-forløb og grundlæggende sikkerhedsgennemgang er gennemført. Loginøvelsen og afprøvning af adgangskontrollen i egen Java-kode mangler endnu.
 
 OWASP Top 10:2025: A01 Broken Access Control og A07 Authentication Failures.
 
-Jeg arbejder i rækkefølgen her og samler op til vores møder. I [ugeplanen](ugeplan.md) vælger jeg, hvad jeg tager fat på nu. Denne uge undersøger jeg også afhængigheder og Dependabot, så jeg behøver ikke nå hele dette forløb på én gang.
+Jeg arbejder først med teori og øvelser i træningsmiljøer. Til sidst anvender jeg det, jeg har lært, i miseOS. Jeg samler op til vores møder og vælger i [ugeplanen](ugeplan.md), hvad jeg tager fat på nu. Denne uge undersøger jeg også afhængigheder og Dependabot, så jeg behøver ikke nå hele dette forløb på én gang.
 
 ## Det jeg vil finde ud af
 
@@ -31,9 +31,11 @@ Jeg vil have en forklaring af fejlene og nogle spørgsmål, jeg kan prøve af i 
 ## Undersøge materialerne
 
 - [x] Se hele Pluralsight-kurset OWASP: Broken Access Control. Jeg vurderer det som rigtig godt, især afsnittene om forsvar mod adgangskontrolfejl og de mere avancerede forsvar.
+- [x] Gennemføre Campfires A01 - Broken Access Control (Completed, 100 XP).
+- [x] Gennemføre Campfires basic-forløb og grundlæggende sikkerhedsgennemgang.
 - [ ] Se de relevante dele af Pluralsight-kurset om IDOR og forced browsing.
 - [ ] Undersøge WebGoats opsætning og finde en relevant øvelse om adgangskontrol.
-- [ ] Sammenholde forklaringerne fra OWASP, PortSwigger og Pluralsight.
+- [ ] Sammenholde forklaringerne fra OWASP, PortSwigger, Pluralsight og Campfire.
 - [ ] Notere, hvad der kræver forhåndsviden, og hvor en studerende kunne få brug for hjælp.
 
 Her vurderer jeg materialerne. Selve løsningen af øvelserne hører til næste del. Jeg skriver tydeligt, hvad jeg har læst, set og selv afprøvet.
@@ -48,13 +50,13 @@ Her vurderer jeg materialerne. Selve løsningen af øvelserne hører til næste 
 - [ ] Forklare, hvilken kontrol der mangler, og hvad konsekvensen er.
 - [ ] Notere tidsforbrug, problemer med opsætning og den hjælp, jeg bruger.
 
-Jeg har nu prøvet flere varianter af adgangskontrolfejl. Næste skridt er at undersøge en konkret funktion i mit eget Java-projekt og gennemføre 2FA simple bypass.
+Jeg har nu prøvet flere varianter af adgangskontrolfejl. Næste skridt er at undersøge WebGoat og afprøve en relevant adgangskontroløvelse. Jeg vil også gennemføre 2FA simple bypass og uddybe teorien, før jeg går videre til miseOS.
 
 Jeg bruger mit lokale øvelsesmiljø eller platformens labs til afprøvningen.
 
 ### Afgrænset undersøgelse af miseOS
 
-Jeg bruger [testopskriften i de faglige noter](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-miseos) og [Excel-skabelonen](../emner/adgangskontrol/miseos-adgangskontrol.xlsx) til at overføre øvelserne til mit eget projekt. Matrixen er tilpasset miseOS API-dokumentation og lokal kode ved commit `8162c94`. Den har 94 ruter og 55 foreslåede tests. Jeg starter med de 12 Start-tests; alle krav skal bekræftes, og ingen tests er endnu kørt. Jeg undersøger miseOS løbende under læringen frem mod rapporten.
+Til sidst bruger jeg [testopskriften i de faglige noter](../emner/adgangskontrol.md#systematisk-test-af-adgangskontrol-i-miseos) og [Excel-skabelonen](../emner/adgangskontrol/miseos-adgangskontrol.xlsx) til at overføre teorien og øvelserne til mit eget projekt. Matrixen er tilpasset miseOS API-dokumentation og lokal kode ved commit `8162c94`. Den har 94 ruter og 55 foreslåede tests. Når jeg når til miseOS, starter jeg med de 12 Start-tests; alle krav skal bekræftes, og ingen tests er endnu kørt.
 
 - [ ] Udfylde testmiljø, version eller commit og afgrænsning i regnearket.
 - [ ] Bekræfte adgangsreglerne for profiler, råvareanmodninger, roller og menuers DRAFT/PUBLISHED-tilstand. Afklare forskelle mellem dokumentation og kode.
@@ -75,7 +77,7 @@ Jeg bruger [testopskriften i de faglige noter](../emner/adgangskontrol.md#system
 - [ ] Forklare rettelsen til 2FA-labben uden at bygge et helt nyt login-system.
 - [ ] Gemme resultatet før og efter rettelsen.
 
-Jeg bruger miseOS som gennemgående Java-projekt og holder de valgte funktioner afgrænsede. Jeg behøver ikke en ny frontend eller et nyt login-system. FOG og platformenes labs kan bruges som supplerende øvelser. Hvis noget kun bliver en skitse, skriver jeg, at det ikke er afprøvet.
+Jeg bruger miseOS som afsluttende Java-projekt efter teori og øvelser og holder de valgte funktioner afgrænsede. Jeg behøver ikke en ny frontend eller et nyt login-system. FOG og platformenes labs kan bruges som øvelser undervejs. Hvis noget kun bliver en skitse, skriver jeg, at det ikke er afprøvet.
 
 ## Samle fund og vurdere materialerne
 

@@ -63,6 +63,13 @@ Det er relevant til at undersøge path traversal, IDOR og loginfejl ved at ændr
 
 Til valgfaget vil jeg starte med at kunne finde en request i HTTP history, sende den til Repeater, ændre én parameter og forklare resultatet. Det giver en konkret forbindelse mellem HTTP, en sårbarhed og test af en rettelse.
 
+## Hashcat og Hydra
+
+- **Hashcat:** Lokal afprøvning af kandidater til blandt andet et svagt HS256-JWT-secret.
+- **Hydra:** Loginforsøg over netværket med testkonti, eksempelvis ved undersøgelse af loginbegrænsning.
+
+[Mine lokale opskrifter](../emner/adgangskontrol/hashcat-og-hydra.md) beskriver forskellen og indeholder kommandoer, forudsætninger og dokumentation af en rettelse. Værktøjerne er ikke afprøvet mod miseOS som led i notatet.
+
 ## Mulig opdeling
 
 ### Java
