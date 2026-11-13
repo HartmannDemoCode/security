@@ -20,8 +20,8 @@ Der er derfor behov for en systematisk sårbarhedsanalyse af, om systemets auten
 
 1. Hvilke aktiver, trusselsaktører og misbrugsscenarier er relevante for systemets autentificering og adgangskontrol, og hvilken sikkerhedsadfærd skal systemet derfor udvise?
 2. Hvilke etiske og juridiske rammer gælder for sårbarhedsanalysen, og hvordan etableres et autoriseret og reproducerbart testmiljø?
-3. I hvilket omfang overholder systemet den forventede sikkerhedsadfærd, når autentificering, sessionshåndtering, kontoadministration og ejerskabskontrol testes både via klienten og direkte mod API'et?
-4. Hvilke afhjælpende tiltag bør prioriteres, og hvordan kan automatiserede tests dokumentere, at de virker uden at forringe legitim funktionalitet?
+3. I hvilket omfang overholder systemet den forventede sikkerhedsadfærd, når autentificering, sessionshåndtering, kontoadministration og ejerskabskontrol testes både via klienten og direkte mod API'et? **RET DETTE OG ADSKILD API OG FRONTEND**
+4. Hvilke afhjælpende tiltag bør prioriteres, og hvordan kan automatiserede tests dokumentere, at de virker uden at forringe legitim funktionalitet? **OMFORMULER DENNE**
 
 ### Afgrænsning
 
@@ -32,37 +32,3 @@ Følgende er ikke omfattet:
 - **Øvrige OWASP-kategorier**, herunder A02 Security Misconfiguration, A03 Software Supply Chain Failures og A05 Injection. XSS vurderes kun i det omfang, det er relevant for kompromittering af tokens. Observationer uden for scope noteres som anbefalinger.
 - **Infrastruktur og hosting** (Caddy, DigitalOcean), herunder HTTP-sikkerhedsheadere.
 - **Denial-of-service, social engineering og funktionalitet, der ikke er implementeret** (campaigns).
-
---- 
-
-## Udkast til problemformulering
-
-**1. Åbent spørgsmål** (●○○○○)
-> Hvor godt beskytter Sheet Herder sine brugeres konti og data, og hvordan kan beskyttelsen forbedres?
-
-Den er let at læse, men har ingen faglig ramme. OWASP, metode og verifikation skal alt sammen komme fra underspørgsmålene. Den er for løs til en sårbarhedsanalyse.
-
-**2. Traditionelt spørgsmål med fagligt grundlag** (●●○○○)
-> I hvilket omfang beskytter webapplikationen Sheet Herder brugerkonti og tilhørende data mod sårbarheder omfattet af OWASP Top 10:2025-kategorierne A01 Broken Access Control og A07 Authentication Failures, og hvordan kan beskyttelsen styrkes og effekten heraf verificeres?
-
-Den dækker hvad og kontekst, men ikke hvordan. Det er netop den kritik, du har fået.
-
-**3. "Vi vil" i to sætninger** (●●●○○)
-> Vi vil undersøge, i hvilket omfang Sheet Herder beskytter brugerkonti og tilhørende data mod Broken Access Control og Authentication Failures (OWASP Top 10:2025, A01 og A07), og hvordan beskyttelsen kan styrkes. Undersøgelsen gennemføres som en sårbarhedsanalyse af systemets kode og adfærd, hvor afhjælpende tiltag verificeres med automatiserede tests.
-
-Den dækker alle tre led og læses naturligt. Til gengæld er den lidt lang, og metoden står for sig selv i anden sætning.
-
-**4. "Vi vil" i én flydende sætning** (●●●●○)
-> Med udgangspunkt i OWASP Top 10:2025 vil vi gennem en sårbarhedsanalyse undersøge, i hvilket omfang Sheet Herder beskytter brugerkonti og tilhørende data mod Broken Access Control (A01) og Authentication Failures (A07), og hvordan beskyttelsen kan styrkes og verificeres.
-
-Den dækker alle tre led i én sætning:
-- **Grundlag:** "med udgangspunkt i OWASP".
-- **Hvordan:** "gennem en sårbarhedsanalyse".
-- **Hvad og kontekst:** resten af sætningen.
-
-Strukturen er den samme som i skabelonen, men formuleret, så den ikke lyder som en formular.
-
-**5. Det strenge format** (●●●●●)
-> Vi vil, baseret på OWASP Top 10:2025-kategorierne A01 Broken Access Control og A07 Authentication Failures og ud fra en white-box-sårbarhedsanalyse, undersøge i hvilket omfang webapplikationen Sheet Herder beskytter brugerkonti og tilhørende data, samt hvordan beskyttelsen kan styrkes og verificeres.
-
-Den er præcis, men tung. Indskuddet mellem "Vi vil" og "undersøge" er så langt, at læseren skal holde tråden i næsten 30 ord.
