@@ -1,6 +1,6 @@
 # Problemformulering
 
-### Problemfelt
+### Problemstilling
 
 Autentificering og adgangskontrol er fundamentet for beskyttelsen af brugerdata i webapplikationer. Broken Access Control er placeret som nr. 1 på OWASP Top 10:2025, og Authentication Failures som nr. 7. Svagheder på disse områder kan give uautoriserede aktører adgang til andre brugeres data eller fuld kontrol over deres konti.
 
