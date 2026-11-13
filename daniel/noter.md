@@ -8,3 +8,4 @@
 - OWASP-10 - OWASP generelt
 - WebGoat
 - Netværk - find video, eventuelt fra CompTia+
+- VirtualBox og VM som test-miljø
