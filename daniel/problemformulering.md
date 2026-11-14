@@ -20,15 +20,19 @@ Der er derfor behov for en systematisk sårbarhedsanalyse af, om systemets auten
 
 1. Hvilke aktiver, trusselsaktører og misbrugsscenarier er relevante for systemets autentificering og adgangskontrol, og hvilken sikkerhedsadfærd skal systemet derfor udvise?
 2. Hvilke etiske og juridiske rammer gælder for sårbarhedsanalysen, og hvordan etableres et autoriseret og reproducerbart testmiljø?
-3. I hvilket omfang overholder systemet den forventede sikkerhedsadfærd, når autentificering, sessionshåndtering, kontoadministration og ejerskabskontrol testes både via klienten og direkte mod API'et? **RET DETTE OG ADSKILD API OG FRONTEND**
-4. Hvilke afhjælpende tiltag bør prioriteres, og hvordan kan automatiserede tests dokumentere, at de virker uden at forringe legitim funktionalitet? **OMFORMULER DENNE**
+3. I hvilket omfang udviser API'et den forventede sikkerhedsadfærd, og hvordan håndhæves autentificering og adgangskontrol, når klienten omgås?
+4. I hvilket omfang udviser klienten den forventede sikkerhedsadfærd, og hvordan bidrager dens håndtering af sessioner og adgang til systemets samlede beskyttelse?
+5. Hvilke afhjælpende tiltag bør prioriteres, og hvordan kan automatiserede tests dokumentere, at de virker uden at forringe legitim funktionalitet? **OMFORMULER DENNE**
 
 ### Afgrænsning
 
-Analysen omfatter Sheet Herders autentificering og adgangskontrol. Det gælder API'ets endpoints under `/auth`, `/users` og `/character-sheets` samt klientens håndtering af tokens, logout, beskyttede ruter og bekræftelse af password ved kontoændringer. Analysen gennemføres på bestemte commits af begge repositories, som angives i bilag. Den foregår udelukkende i et lokalt testmiljø, og produktionsmiljøet testes ikke. Analysen afgrænses til 3–5 problemstillinger, der behandles i dybden.
+Analysen omfatter Sheet Herders autentificering og adgangskontrol. Det gælder samtlige af API'ets endpoints og dets CORS-konfiguration samt klientens håndtering af tokens, logout, beskyttede ruter og bekræftelse af password ved kontoændringer. Hashing af passwords og signering og validering af JWT indgår, i det omfang de har betydning for autentificeringen. Analysen gennemføres på bestemte commits af begge repositories, som angives i bilag. Den foregår udelukkende i et lokalt testmiljø, og produktionsmiljøet testes ikke. Analysen afgrænses til 3–5 problemstillinger, der behandles i dybden.
 
 Følgende er ikke omfattet:
-- **Offentlige reference-endpoints**, fordi de kun udstiller data, der kan læses, og som ikke er knyttet til brugere.
-- **Øvrige OWASP-kategorier**, herunder A02 Security Misconfiguration, A03 Software Supply Chain Failures og A05 Injection. XSS vurderes kun i det omfang, det er relevant for kompromittering af tokens. Observationer uden for scope noteres som anbefalinger.
-- **Infrastruktur og hosting** (Caddy, DigitalOcean), herunder HTTP-sikkerhedsheadere.
-- **Denial-of-service, social engineering og funktionalitet, der ikke er implementeret** (campaigns).
+- **Øvrige OWASP-kategorier**, herunder A02 Security Misconfiguration, A03 Software Supply Chain Failures, A04 Cryptographic Failures (ud over det, der er nævnt ovenfor) og A05 Injection. XSS vurderes kun i det omfang, det er relevant for kompromittering af tokens.
+- **Infrastruktur og hosting** (Caddy, DigitalOcean), herunder HTTP-sikkerhedsheadere. API'ets egen CORS-konfiguration er dog omfattet, da den hører under A01.
+- **Denial-of-service**, herunder belastningstest.
+- **Social engineering**
+- **Ikke-implementeret funktionalitet**, herunder campaigns.
+
+Observationer uden for scope noteres som anbefalinger.
