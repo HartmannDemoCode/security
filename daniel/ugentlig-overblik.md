@@ -1,10 +1,23 @@
-# Ugentlig Overblik [NAVN]
+# Ugentlig Overblik Daniel
 
 *Nyeste uge øverst*
 
 ## Uge 47
-**Emne**  
-Tekst
+**Problemformulering**  
+Problemformuleringen er opdateret og bør genlæses i sin helhed. Thomas' to anbefalinger er indarbejdet:
+- Underspørgsmål 3 er delt i to: API (3) og klient (4)
+- Underspørgsmål 5 er omformuleret, så sproget er i tråd med resten af dokumentet
+
+Øvrige ændringer:
+- Formuleringer antager ikke længere, at der findes sårbarheder
+- Underspørgsmål 2: testmiljøet er koblet til de etiske og juridiske rammer
+- Afgrænsning: kun andre OWASP-kategorier udelukkes, ikke specifikke sårbarheder. CORS, hashing og JWT er tilføjet, og eksterne tjenester er udelukket
+
+Til mødet:
+- **"vi" eller "jeg"?** Problemformuleringen bruger forfatter-"vi", men eksamen er individuel. Er det acceptabelt, eller skal rapporten skrives med "jeg"?
+
+[Problemformulering](problemformulering.md)
+
 
 ## Uge XX (Skabelon)
 **Emne X**  
