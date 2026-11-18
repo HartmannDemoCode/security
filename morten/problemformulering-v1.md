@@ -30,17 +30,18 @@ Jeg vil derfor bruge den viden, jeg får i valgfaget, til at undersøge miseOS' 
 
 ## Problemformulering
 
-**I hvilket omfang forhindrer miseOS' autentifikation og adgangskontrol uautoriseret adgang til udvalgte data og funktioner, og hvordan kan udvalgte forbedringer implementeres og efterprøves, så de styrker beskyttelsen uden at forhindre den tilsigtede brug?**
+**I hvilket omfang forhindrer miseOS' autentifikation og adgangskontrol uautoriseret adgang til udvalgte data og funktioner, og hvordan kan udvalgte forbedringer implementeres og efterprøves, så de styrker beskyttelsen uden at forringe funktionaliteten for applikationens brugere?**
 
 ## Underspørgsmål
 
 | # | Underspørgsmål | Besvares i rapportens |
 | --- | --- | --- |
 | 1 | Hvilke data og funktioner skal beskyttes i de valgte arbejdsgange, hvem skal have adgang, og hvilke misbrugsscenarier er relevante? | Kap. 2 – begreber og trusselsmodel |
-| 2 | Hvordan håndhæver miseOS i dag autentifikation samt ejerskabs- og rollekrav, og hvor afviger den faktiske adfærd fra den forventede? | Kap. 4 – fund |
+| 2 | Hvordan håndhæver miseOS i dag autentifikation samt ejerskabs- og rollekrav, og i hvilket omfang svarer den faktiske adfærd til den forventede? | Kap. 4 – fund |
 | 3 | Hvilke risici medfører eventuelle afvigelser for miseOS, og hvordan bør de prioriteres? | Kap. 4 – risiko og prioritering |
-| 4 | Hvilke forbedringer kan implementeres, og hvilke afvejninger mellem sikkerhed, brugervenlighed og vedligeholdelse indebærer de? | Kap. 5 – design og implementering |
-| 5 | Hvad viser gentest af misbrugsscenarier og test af tilladt brug om forbedringernes virkning, og hvilke risici og begrænsninger står tilbage? | Kap. 5–6 – verifikation og diskussion |
+| 4 | Hvilke forbedringer kan implementeres, og hvilke afvejninger mellem sikkerhed og brugervenlighed indebærer de? | Kap. 5 – design og implementering |
+
+**Perspektivering:** Hvad viser gentest af misbrugsscenarier og test af tilladt brug om forbedringernes virkning, og hvilke risici og begrænsninger står tilbage? (Kap. 5–6 – verifikation og diskussion)
 
 ## Metode
 
