@@ -37,8 +37,7 @@ Jeg bruger PHP2Shell som case og et kendt Java-projekt til den praktiske del. Je
 
 Jeg vil også undersøge, om en praktisk øvelse kan give en bedre forståelse af problemet: først vise, hvordan en sårbar afhængighed kan misbruges, og derefter prøve samme angreb efter en rettelse. Det kunne være en øvelse, andre studerende også får noget ud af.
 
-Vurderinger af materialet ligger under [ressourcer](../ressourcer/afhaengigheder.md). Forklaringer og resultater fra afprøvninger ligger under [emner](../emner/afhaengigheder.md). Prioriteringen for denne uge ligger i [ugeplanen](ugeplan.md).
-
+Vurderinger af materialet ligger under [ressourcer](../ressourcer/afhaengigheder.md). Forklaringer og resultater fra afprøvninger ligger under [emner](../emner/afhaengigheder.md).
 ## Læse om problemet
 
 - [ ] Læse OWASP A03:2025 om Software Supply Chain Failures.

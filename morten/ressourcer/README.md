@@ -13,7 +13,7 @@ Mine nærmere undersøgelser ligger her:
 - [OWASP – Proactive Controls og ASVS](owasp/README.md)
 - [Microsoft – STRIDE og Security Development Lifecycle (SDL)](microsoft/README.md)
 
-Prioriteringen for mit arbejde ligger i [ugeplanen](../forloeb/ugeplan.md). De faglige noter ligger under emner, blandt andet [adgangskontrol](../emner/adgangskontrol.md) og [afhængigheder](../emner/afhaengigheder.md).
+Hvad jeg arbejder med, står i [det ugentlige overblik](../ugentlig-overblik.md). De faglige noter ligger under emner, blandt andet [adgangskontrol](../emner/adgangskontrol.md) og [afhængigheder](../emner/afhaengigheder.md).
 
 Prioriteringen tager udgangspunkt i, at de studerende er **datamatikere på 4. semester**. De er derfor ikke begyndere i programmering, databaser, HTTP, API'er osv., men kan godt være begyndere inden for security.
 

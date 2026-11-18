@@ -19,9 +19,10 @@ Hvilke kurser, sider og værktøjer findes der, og hvad synes jeg om dem efter a
 
 Hvad vil jeg undersøge, hvilket materiale bruger jeg, og hvad vil jeg have ud af arbejdet?
 
-- [Ugeplan](forloeb/ugeplan.md) – den fælles ramme for det, jeg arbejder med nu.
+- [Ugentligt overblik](ugentlig-overblik.md) – hvad jeg har lavet hver uge.
 - [Overblik over Top 10-forløbene](forloeb/README.md) – min foreløbige opdeling af alle ti kategorier.
 - [Login og adgangskontrol – A01 og A07](forloeb/01-adgangskontrol.md)
+- [Login og sessioner – A07](forloeb/01-authentication.md)
 - [Afhængigheder og sikker opsætning – A03 og A02](forloeb/02-afhaengigheder.md)
 
 Jeg bruger navnet forløb, fordi arbejdet godt kan fortsætte over flere uger. Opsamling fra møderne ligger sammen med den plan, vi taler om.
@@ -32,6 +33,8 @@ Hvad har jeg lært og selv prøvet? Her ligger mine faglige forklaringer, afprø
 
 - [Min fremgangsmåde til sikkerhedsundersøgelser](emner/fremgangsmaade.md) – huskeliste fra øvelserne til konkrete tests, koderettelser og gentest.
 - [Login, sessioner og adgangskontrol](emner/adgangskontrol.md)
+- [A07 – Authentication Failures](emner/authentication.md)
 - [Afhængigheder, sikker opsætning og PHP2Shell](emner/afhaengigheder.md)
+- [Java4Shell – undersøgelse af min droplet](emner/java4shell.md)
 
 Når jeg undersøger et nyt emne, kan det få en plan under `forloeb/`, en vurdering af materialerne under `ressourcer/` og faglige noter under `emner/`.

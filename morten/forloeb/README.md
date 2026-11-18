@@ -2,7 +2,7 @@
 
 Jeg samler beslægtede OWASP-emner i samme case, så jeg kan bruge opsætning og kode igen. Det her er min opdeling til undersøgelserne, ikke OWASPs officielle inddeling af undervisning.
 
-Den aktuelle prioritering ligger i [ugeplanen](ugeplan.md). Resten af listen er et forslag til senere forløb. Ingen af kategorierne er færdigundersøgt endnu.
+Hvad jeg har lavet hver uge, står i [det ugentlige overblik](../ugentlig-overblik.md). Resten af listen er et forslag til senere forløb. Ingen af kategorierne er færdigundersøgt endnu.
 
 ## 1. Login, sessioner og adgangskontrol
 
@@ -10,7 +10,7 @@ A01 Broken Access Control og A07 Authentication Failures.
 
 Jeg vil undersøge, hvordan man både kontrollerer brugerens identitet og adgangen til den konkrete handling eller ressource. Jeg bruger login og dokumenter i samme applikation som udgangspunkt.
 
-[Plan for forløbet](01-adgangskontrol.md).
+[Plan for forløbet](01-adgangskontrol.md) og [plan for A07-delen](01-authentication.md).
 
 ## 2. Afhængigheder, opdateringer og sikker opsætning
 

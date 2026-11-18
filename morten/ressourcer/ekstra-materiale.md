@@ -6,7 +6,7 @@ Udvalget er fundet den 24. oktober 2026 ud fra artikler, indholdsfortegnelser, o
 
 Materialet er på engelsk.
 
-Det her er supplement til [ugeplanen](../forloeb/ugeplan.md). Jeg behøver ikke gennemgå hele listen. Jeg kan vælge noget, der hjælper med de spørgsmål, øvelserne giver mig.
+Det her er supplement til [forløbene](../forloeb/README.md). Jeg behøver ikke gennemgå hele listen. Jeg kan vælge noget, der hjælper med de spørgsmål, øvelserne giver mig.
 
 ## Tre steder at starte
 

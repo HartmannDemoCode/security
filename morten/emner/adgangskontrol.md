@@ -10,6 +10,8 @@ Her samler jeg det, jeg lærer om A01 Broken Access Control og A07 Authenticatio
 
 Mine forklaringer af loginforløb, sessioner og adgang til konkrete ressourcer. For hvert eksempel vil jeg skrive, hvilken kontrol der fejler, og om jeg undersøger A01 eller A07.
 
+Mine noter om A07 er blevet så lange, at de nu har deres egen fil: [A07 – Authentication Failures](authentication.md). Der ligger password-politik, 2FA, rate limiting, sessioner og min idé til et tjek mod Pwned Passwords. Her holder jeg mig mest til adgangskontrol.
+
 ## Min forklaring af fejlen
 
 Skrives efter læsning og afprøvning. Jeg vil forklare, hvilken adgang brugeren burde have, og hvad der går galt i applikationen.

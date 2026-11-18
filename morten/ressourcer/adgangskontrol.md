@@ -1,6 +1,6 @@
 # Materiale til login, sessioner og adgangskontrol
 
-Status: I gang. OWASP A01 og A07 er læst, Pluralsight-kurset OWASP: Broken Access Control er gennemført, og PortSwiggers afsnit om adgangskontrol er læst med de 13 tilhørende labs løst. Campfires A01 - Broken Access Control, basic-forløb og grundlæggende sikkerhedsgennemgang er også gennemført.
+Status: I gang. OWASP A01 og A07 er læst, Pluralsight-kurserne OWASP: Broken Access Control og OWASP: Authentication Failures er gennemført, og PortSwiggers afsnit om adgangskontrol er læst med de 13 tilhørende labs løst. Campfires A01 - Broken Access Control, basic-forløb og grundlæggende sikkerhedsgennemgang er også gennemført.
 
 Her samler jeg mine noter og vurderinger af materialer om login, sessioner og adgangskontrol.
 
@@ -70,6 +70,12 @@ Jeg har gennemført **OWASP: Broken Access Control** og synes, det er rigtig god
 Kurset giver mig en god sammenhæng mellem, hvordan adgangskontrol kan omgås, og hvordan fejlene kan forebygges.
 
 Fra videoerne tager jeg især deny by default og princippet om at kontrollere adgang ved hver handling med mig. De avancerede afsnit kommer også ind på rate limiting, automatiserede tests, rettigheder i databasen, kontekst og logging af afviste adgangsforsøg. Mine faglige noter fra videoerne og skærmbillederne ligger under [forsvar mod adgangskontrolfejl](../emner/adgangskontrol.md#forsvar-mod-adgangskontrolfejl).
+
+### OWASP: Authentication Failures
+
+Jeg har set [OWASP: Authentication Failures](https://www.pluralsight.com/courses/owasp-authentication-failures) af Mohammad Ayashi. Det varer cirka en time og er på Intermediate-niveau.
+
+Kurset handler mest om, hvad man som udvikler skal gøre. Modulet om password-politik var det bedste: længde frem for kompleksitet, ingen tvunget udløb og et tjek mod lækkede adgangskoder. Demoappen viser, at et Pwned-tjek er nemt at bygge ind. Den er i React, så jeg skal selv overføre det til Java. Mine noter ligger i [A07 – Authentication Failures](../emner/authentication.md#pluralsight--owasp-authentication-failures).
 
 ### Secure Coding: Preventing Broken Access Control
 
