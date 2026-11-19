@@ -19,10 +19,18 @@ Problemformuleringen er opdateret og bør genlæses i sin helhed. Thomas' to anb
 [Problemformulering](problemformulering.md)
 
 ### Testmiljø
-Jeg har installeret en Virtual Machine *VM* via Hypervisor (VirtualBox) med Kali Linux - dette skal anvendes som testmiljø fremadrettet
-Processen og overvejelserne beskrives i den nye fil linket herunder
+Jeg har sat et lokalt testmiljø op, som skal bruges fremadrettet. Processen og overvejelserne er beskrevet i den nye fil, der er linket herunder.
 
-[VirtualBox](linux.md)
+**Valg:**
+- **Hypervisor:** VirtualBox (type 2). Det er gratis og open source, og testmiljøet kan genskabes på en almindelig studiecomputer. Snapshots bruges til at nulstille miljøet.
+- **Distro:** Kali Linux som angriber-maskine, da de fleste sikkerhedsværktøjer er forudinstalleret, og der findes officielle VirtualBox-images.
+- **Opsætning:** 4 CPU-kerner, 8 GB RAM og standardlager (80 GB dynamisk allokeret).
+- **Fravalgt:** WSL2 isolerer for dårligt fra host. Type 1 hypervisorer (VMware ESXi, Proxmox) kræver en dedikeret maskine. Proxmox og Vagrant er noteret som mulige næste skridt.
+
+**OWASP Juice Shop** er sat op i miljøet som en bevidst sårbar webapplikation, så værktøjer og teknikker kan øves, før 3. semester opgaven testes.
+
+[Virtual Machine **VM**](linux.md)
+[Juice Shop](owasp.md)
 
 ---
 
