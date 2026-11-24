@@ -45,3 +45,9 @@
 # Hvad skal være formatet på eksamensrapporten?
 - Individuel eller gruppe?
 - Headlines og struktur?
+
+# GDPR 
+- i forhold til IP adresser der gemmes i logfiler. 
+
+# Kurser
+- https://www.itpro.com/business-strategy/careers-training/358117/the-top-online-cyber-security-courses

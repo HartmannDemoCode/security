@@ -3,7 +3,7 @@
 - [Danske hoteller hacket](https://www.dr.dk/nyheder/penge/hoteldirektoer-efter-cyberangreb-det-er-som-blive-klaedt-af)
 - [Danske virksomheder er sårbare](https://www.dr.dk/nyheder/penge/opraab-mindre-virksomheder-enormt-saarbare-over-cyberangreb)
 - [Kommunale hjemmesider under angreb](https://www.dr.dk/nyheder/indland/angreb-paa-kommuners-hjemmesider-fortsaetter-paa-fjerde-dag-central-aktoer-efterspoerger-nu-flere)
-- []()
+- [Binance hacket for 42 milliarder kroner](https://www.dr.dk/nyheder/penge/hackere-har-stjaalet-42-milliarder-kroner-fra-verdens-stoerste-kryptoboers)
 - []()
 - []()
 - []()
