@@ -1,0 +1,5 @@
+# Various formats
+1. **Case study**: Find an interesting case study of a security incident and write a report about it. Include the following sections: background, what happened, how it was discovered, what was done to mitigate the issue, and what lessons can be learned from it.
+2. **Threat modeling**: Choose a web application and create a threat model for it. Include the following sections: application overview, assets, threats, vulnerabilities, and mitigations.
+3. **Security testing**: Choose a web application and perform security testing on it. Include the following sections: application overview, testing methodology, test results, and recommendations for improvement.
+4. **TryHackMe**: Complete 10 advanced TryHackMe rooms and document process on **20 min videos**. Include the following sections: room overview, objectives, challenges faced, and lessons learned.
