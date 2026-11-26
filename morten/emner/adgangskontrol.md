@@ -30,7 +30,7 @@ Noter fra Pluralsight-kurset **OWASP: Broken Access Control**, baseret på de se
 
 | Forsvar fra kurset | Det jeg tager med |
 | --- | --- |
-| Rate limiting | Begræns antallet af requests for at modvirke brute force og automatiserede forsøg. Det supplerer kontrollen af rettigheder. |
+| Rate limiting | Begræns antallet af requests for at modvirke brute force og automatiserede forsøg. Det supplerer kontrollen af rettigheder. miseOS har ingen rate limiting i dag; se [planen i A07-noterne](authentication.md#miseos-er-sårbar-over-for-brute-force). |
 | Unit- og integrationstests | Test både horisontal og vertikal adgangskontrol. En bruger uden rettigheder skal afvises fra beskyttede funktioner, og nye funktioner skal omfattes af testene. Test også den adgang, der skal være tilladt. |
 | Kontrol uden for applikationskoden | Kurset viser separate databasebrugere til forskellige roller med tilpassede databaserettigheder som et muligt ekstra lag. Det knytter sig til least privilege, som jeg også undersøger i min container. |
 | Kontekstbaseret kontrol | Placering, enhed, tidspunkt og IP-adresse kan indgå som ekstra betingelser for adgang. De erstatter ikke kontrollen af brugerens rettigheder. |
@@ -69,7 +69,7 @@ Jeg starter lokalt med egne testdata og afgrænser den første undersøgelse til
 
 Retforslag, indkøbslister, takeaway og notifikationer er mulige udvidelser. At ruterne står i arket betyder ikke, at jeg har testet dem eller har valgt dem alle til rapporten. SQL injection, belastningstest, afhængigheder og deploymentkonfiguration indgår ikke i denne adgangskontrolmatrix.
 
-Jeg noterer faktisk base-URL inklusive `/api/v1`, version eller commit og testdato før forsøgene. Dokumentationens index angiver `https://miseos-api.corral.dk/api/v1`, mens flere eksempler bruger `https://miseos.corral.dk/api/v1`. Jeg skal vælge mit faktiske testmiljø; ingen af de publicerede API-hosts er testet som led i denne planlægning.
+Jeg noterer faktisk base-URL inklusive `/api/v1`, version eller commit og testdato før forsøgene. Dokumentationens index angiver `https://miseos-api.corral.dk/api/v1`, mens flere eksempler bruger `https://miseos.corral.dk/api/v1`. Jeg skal vælge mit faktiske testmiljø; ingen af de publicerede API-hosts er testet som led i denne planlægning. miseOS-web bruger `miseos-api.corral.dk` til WebSocket-forbindelsen.
 
 ### Roller, ejerskab og tilstand
 
@@ -118,7 +118,7 @@ Pladsholdere som `<REQUEST_A>` erstattes med kendte ID'er fra mine testdata. Bod
 
 Ved ændringstests gemmer jeg også ressourcens tilstand før og efter. Jeg bruger gyldige datoer, en gyldig body og en passende tilstand, så en valideringsfejl ikke skjuler kontrollen af rolle eller ejerskab. Separate disponible testressourcer hindrer, at godkendelse eller sletning ødelægger forudsætningerne for næste forsøg.
 
-Ved test uden login fjerner jeg alle autentifikationsoplysninger. Udløbne JWT'er testes særskilt med deres faktiske udløbstid. Jeg har ikke fundet en logout-route i den læste SecurityRoute; en fremtidig logout-test kræver afklaring af, om kravet handler om klientens token eller serverinvalidering.
+Ved test uden login fjerner jeg alle autentifikationsoplysninger. Udløbne JWT'er testes særskilt med deres faktiske udløbstid. miseOS har ingen logout-route. Logout sker i frontenden, som sletter tokenet fra `localStorage`, så serveren accepterer et kopieret token, til det udløber efter 30 minutter. En logout-test viser derfor kun, at klienten glemmer tokenet; se [JWT-noterne](jwt.md#mine-valg-og-deres-konsekvenser).
 
 ### Afklaringer før jeg konkluderer
 
@@ -128,7 +128,8 @@ Kilder og afklaringer indeholder blandt andet:
 - **Andres email og password:** Dokumentationen siger kun egne felter, mens `UserService.validateOwnershipOrAdmin` også accepterer HEAD_CHEF. Passwordændring kræver stadig aktuelt password. Den ønskede administratoradgang skal afklares.
 - **Menuer:** Lokal kode har en særskilt `/weekly-menus/by-week/admin`. Den offentlige route springer autentifikation over i den læste SecurityController. Jeg tester offentlig beskyttelse af DRAFT og ledelsesadgang hver for sig.
 - **Indkøbslister:** Dokumentationen viser `PATCH /shopping-lists/{id}/items/ordered`, mens lokal route bruger `PUT /shopping-lists/{id}/items/order-all`.
-- **WebSocket:** Dokumentationen kræver KITCHEN_STAFF, mens den lokale WS-route bruger manuel JWT-kontrol uden en Role-deklaration. Jeg skal afklare og eventuelt teste kunders adgang og levering til den rigtige modtager.
+- **WebSocket:** Dokumentationen kræver KITCHEN_STAFF, mens den lokale WS-route bruger manuel JWT-kontrol uden en Role-deklaration. Jeg skal afklare og eventuelt teste kunders adgang og levering til den rigtige modtager. Tokenet kan også sendes som `?token=` i URL'en, og det er sådan frontenden gør.
+- **Deny by default i `authenticate()`:** En route uden Role-deklaration springer både autentifikation og autorisation over, fordi en tom rolleliste behandles som `ANYONE`. Alle HTTP-routes har en rolle i dag, men en ny route, hvor jeg glemmer rollen, bliver offentlig. Det er fail open og strider mod deny by default.
 
 Disse observationer er ikke påviste sårbarheder. Jeg fastlægger den ønskede adfærd og testversionen, før jeg vurderer et resultat som en fejl.
 

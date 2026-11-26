@@ -2,6 +2,50 @@
 
 *Nyeste uge øverst*
 
+## Uge 48
+**PortSwigger – Authentication vulnerabilities**  
+Jeg har løst labs i PortSwiggers afsnit om authentication. Det jeg især tager med er, at login er et forløb og ikke ét tjek. Hvert trin skal kunne holde til, at angriberen springer over, gentager eller ændrer det. Brugernavne kan findes ud fra fejlbeskeden, men også ud fra små forskelle i teksten eller svartiden. Ved 2FA simple bypass var jeg allerede logget ind efter adgangskoden, så jeg kunne gå direkte til kontosiden uden kode. Når jeg selv bygger login, skal svaret være ens (tekst, statuskode og tid), der skal være rate limiting, og 2FA-status skal gemmes på serveren. Tokens til "husk mig" og nulstilling skal være tilfældige.  
+[PortSwigger-noter under A07](emner/authentication.md#portswigger--authentication-vulnerabilities)  
+[PortSwigger – Authentication](https://portswigger.net/web-security/authentication)
+
+**PortSwigger – JWT attacks**  
+Jeg har læst JWT-afsnittet og løst labs. Et JWT er kun kodet og ikke krypteret, så alle kan læse payloaden. Det er kun signaturen, der beskytter det. Alle angrebene går ud på, at serveren stoler på noget i tokenet, som angriberen selv bestemmer: `alg: none`, en nøgle i `jwk`/`jku`, en `kid` brugt som filsti eller en algoritme valgt ud fra headeren. Til web development tager jeg med: verificér altid signaturen, lås algoritmen på serveren, hent nøglen fra serverens konfiguration, brug en lang tilfældig nøgle og tjek `exp` og `iss`. JWT hører mest under A07, fordi tokenet beviser, hvem brugeren er. Der er overlap med A01 (ændring af `role`) og A04 (svag nøgle).  
+[JWT – JSON Web Tokens](emner/jwt.md)  
+[PortSwigger – JWT attacks](https://portswigger.net/web-security/jwt)
+
+**Nimbus JOSE+JWT i miseOS**  
+Jeg har undersøgt, hvor Nimbus kan gøre et program svagt: `SignedJWT.parse()` verificerer ikke selv, `JWTParser` kan returnere usignerede tokens, `verify()` tjekker ikke `exp` og `iss`, og header-værdier som `jwk` og `kid` er input fra angriberen. Derefter har jeg gennemgået min egen JWT-kode i miseOS og tjekket angrebene fra labs mod den. Ingen af dem virker: signaturen verificeres før claims læses, `alg: none` afvises, nøglen kommer kun fra serverens miljøvariabel (32 tilfældige tegn), og headerværdier som `jwk`, `jku` og `kid` bruges ikke. Mine egne valg har konsekvenser, som jeg har beskrevet: tokenet gælder i 30 minutter, rollen ligger i tokenet, logout sker kun på klienten, og tokenet ligger i `localStorage`, hvor et XSS-hul vil kunne stjæle det. Jeg har også tjekket for hardkodede hemmeligheder: koden er ren, men en fil med loginoplysninger til mine testbrugere og JWT'er lå i den offentlige git-historik i knap en måned. Den er fjernet nu, men ligger stadig i historikken, så adgangskoderne skal skiftes.  
+[miseOS – min egen analyse af JWT-koden](emner/jwt.md#miseos--min-egen-analyse-af-jwt-koden)
+
+**Brugernavne og brute force i miseOS**  
+Fra PortSwigger har jeg samlet alle de tegn, der kan afsløre et rigtigt brugernavn eller en rigtig adgangskode: fejlbesked, små forskelle i teksten, svarets længde, statuskode, svartid, kontolås og cookies. Jeg har også skrevet, hvordan en angriber finder brugernavne, før brute force går i gang. Derefter har jeg holdt mine egne endpoints op mod de samme tricks. Login giver samme fejlbesked og statuskode, men svartiden afslører, om e-mailen findes, fordi BCrypt kun køres for rigtige brugere. Registreringen afslører det direkte med `409 Conflict`. Og da miseOS ikke har rate limiting, er login sårbart over for brute force. Jeg har lavet en plan for at rette det, og næste skridt er at vise fundene med Burp.  
+[Brugernavne, brute force og miseOS](emner/authentication.md#hvordan-finder-en-angriber-brugernavne-og-adgangskoder)
+
+**Juice Shop – Broken Authentication**  
+Jeg er i gang med kategorien Broken Authentication. Hver opgave løser og dokumenterer jeg efter min faste metode, så jeg kan se, hvordan den blev løst, og bruge fremgangsmåden igen.  
+[Min metode i Juice Shop](ovelser/juice-shop/README.md)  
+[Password Strength](ovelser/juice-shop/broken-authentication/password-strength.md)  
+[Juice Shop – Broken Authentication](https://pwning.owasp-juice.shop/companion-guide/latest/part2/broken-authentication.html)
+
+**Næste skridt: WebGoat og Juice Shop**  
+Efter PortSwiggers labs om adgangskontrol, authentication og JWT vurderer jeg, at mit fundament er solidt nok til at gøre WebGoat og Juice Shop færdige i A01 og A07.
+
+Tips jeg tager med:
+- **WebGoat A07** har lektioner om authentication bypass, password reset, secure passwords og JWT tokens. Her kan jeg bruge JWT-noterne direkte. A01 skal også gøres færdig (3 opgaver mangler).
+- **Juice Shops JWT-opgaver** (Unsigned JWT og Forged Signed JWT) ligger under *Vulnerable Components*, ikke under Broken Authentication.
+- **Burp Community begrænser Intruders hastighed.** Til opgaver med meget brute force bruger jeg Hydra eller ffuf i stedet. Se [Hashcat og Hydra](emner/adgangskontrol/hashcat-og-hydra.md).
+- Jeg bruger samme fremgangsmåde og skabelon som i Juice Shop, så jeg kan vise fejlene igen.
+
+Når øvelserne er færdige, tester jeg fundene i miseOS med Burp, så de går fra "jeg ved det fra koden" til "jeg har vist det":
+1. Intruder på registreringen for at finde e-mails (`409 Conflict`).
+2. Måle svartiden på login med en kendt og en ukendt e-mail.
+3. Brute force af login uden rate limiting.
+4. Rette fundene og teste igen.
+
+[WebGoat](https://owasp.org/www-project-webgoat/)  
+[Juice Shop – Vulnerable Components](https://pwning.owasp-juice.shop/companion-guide/latest/part2/vulnerable-components.html)
+
+
 ## Uge 47
 **A07 Authentication Failures**  
 Jeg har læst OWASP A07:2025 og samlet de typiske fejl i fire grupper: gæt og automatiserede angreb, svage adgangskoder og opbevaring, loginforløb samt sessioner og tokens. Jeg har også set Pluralsight-kurset OWASP: Authentication Failures. Det jeg tager med: MFA, credential stuffing ved genbrugte adgangskoder, rate limiting, CIA, statisk kodeanalyse (SonarQube, Semgrep, CodeQL), tjek af adgangskoder mod Pwned Passwords og nyt session-ID ved login. Jeg har lavet en liste over, hvad jeg vil undersøge i miseOS' login og JWT-håndtering. PortSwiggers authentication-labs og 2FA simple bypass mangler endnu.  
