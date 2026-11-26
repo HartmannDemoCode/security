@@ -21,29 +21,13 @@ Jeg har undersøgt, hvor Nimbus kan gøre et program svagt: `SignedJWT.parse()` 
 Fra PortSwigger har jeg samlet alle de tegn, der kan afsløre et rigtigt brugernavn eller en rigtig adgangskode: fejlbesked, små forskelle i teksten, svarets længde, statuskode, svartid, kontolås og cookies. Jeg har også skrevet, hvordan en angriber finder brugernavne, før brute force går i gang. Derefter har jeg holdt mine egne endpoints op mod de samme tricks. Login giver samme fejlbesked og statuskode, men svartiden afslører, om e-mailen findes, fordi BCrypt kun køres for rigtige brugere. Registreringen afslører det direkte med `409 Conflict`. Og da miseOS ikke har rate limiting, er login sårbart over for brute force. Jeg har lavet en plan for at rette det, og næste skridt er at vise fundene med Burp.  
 [Brugernavne, brute force og miseOS](emner/authentication.md#hvordan-finder-en-angriber-brugernavne-og-adgangskoder)
 
-**Juice Shop – Broken Authentication**  
-Jeg er i gang med kategorien Broken Authentication. Hver opgave løser og dokumenterer jeg efter min faste metode, så jeg kan se, hvordan den blev løst, og bruge fremgangsmåden igen.  
-[Min metode i Juice Shop](ovelser/juice-shop/README.md)  
-[Password Strength](ovelser/juice-shop/broken-authentication/password-strength.md)  
-[Juice Shop – Broken Authentication](https://pwning.owasp-juice.shop/companion-guide/latest/part2/broken-authentication.html)
+**Juice Shop**  
+Jeg er i gang med Broken Authentication og Injection. Hver opgave dokumenterer jeg ud fra min skabelon, så jeg kan se, hvordan jeg løste den, og bruge fremgangsmåden igen. Injection er ikke relevant for miseOS, som bruger Hibernate med parameteriserede queries.
 
-**Næste skridt: WebGoat og Juice Shop**  
-Efter PortSwiggers labs om adgangskontrol, authentication og JWT vurderer jeg, at mit fundament er solidt nok til at gøre WebGoat og Juice Shop færdige i A01 og A07.
-
-Tips jeg tager med:
-- **WebGoat A07** har lektioner om authentication bypass, password reset, secure passwords og JWT tokens. Her kan jeg bruge JWT-noterne direkte. A01 skal også gøres færdig (3 opgaver mangler).
-- **Juice Shops JWT-opgaver** (Unsigned JWT og Forged Signed JWT) ligger under *Vulnerable Components*, ikke under Broken Authentication.
-- **Burp Community begrænser Intruders hastighed.** Til opgaver med meget brute force bruger jeg Hydra eller ffuf i stedet. Se [Hashcat og Hydra](emner/adgangskontrol/hashcat-og-hydra.md).
-- Jeg bruger samme fremgangsmåde og skabelon som i Juice Shop, så jeg kan vise fejlene igen.
-
-Når øvelserne er færdige, tester jeg fundene i miseOS med Burp, så de går fra "jeg ved det fra koden" til "jeg har vist det":
-1. Intruder på registreringen for at finde e-mails (`409 Conflict`).
-2. Måle svartiden på login med en kendt og en ukendt e-mail.
-3. Brute force af login uden rate limiting.
-4. Rette fundene og teste igen.
-
-[WebGoat](https://owasp.org/www-project-webgoat/)  
-[Juice Shop – Vulnerable Components](https://pwning.owasp-juice.shop/companion-guide/latest/part2/vulnerable-components.html)
+Et eksempel, der gav meget: I *Bjoern's Favorite Pet* nulstillede jeg en adgangskode med svaret på et sikkerhedsspørgsmål, som jeg fandt i en video på nettet. Opgaven viser, hvor farlig offentlig information (OSINT) er, og den fik mig til at se på, hvad der ligger offentligt om miseOS, fx e-mails i git-historikken.  
+[Bjoern's Favorite Pet](ovelser/juice-shop/broken-authentication/bjoerns-favorite-pet.md)  
+[Min metode og skabelon](ovelser/juice-shop/README.md)  
+[Mine Juice Shop-noter](ovelser/juice-shop/)
 
 
 ## Uge 47

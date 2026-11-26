@@ -4,7 +4,6 @@
 **Dato:** 2026-11-21  
 **Miljø:** OWASP Juice Shop i Docker, Chrome DevTools, Burp Suite Community  
 **Status:** Løst  
-**Hjælp brugt:** Ingen  
 **Tidsforbrug:** Ca. 20 min.
 
 ## Mål

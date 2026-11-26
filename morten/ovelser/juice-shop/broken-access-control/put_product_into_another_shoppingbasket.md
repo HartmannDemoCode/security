@@ -4,7 +4,6 @@
 **Dato:** 2026-11-21  
 **Miljø:** OWASP Juice Shop i Docker, Burp Suite Community  
 **Status:** Løst  
-**Hjælp brugt:** Companion guide  
 **Tidsforbrug:** Ca. 20 min.
 
 ## Mål

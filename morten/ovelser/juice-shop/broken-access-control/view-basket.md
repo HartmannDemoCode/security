@@ -1,9 +1,9 @@
 # View Basket (⭐⭐)
 
-**Kategori:** Broken Access Control (A01:2021) -- IDOR\
-**Dato:** 2026-11-21\
-**Miljø:** OWASP Juice Shop i Docker, Burp Suite Community\
-**Status:** Løst\
+**Kategori:** Broken Access Control (A01:2021) -- IDOR
+**Dato:** 2026-11-21
+**Miljø:** OWASP Juice Shop i Docker, Burp Suite Community
+**Status:** Løst
 **Tidsforbrug:** Ca. 10 min.
 
 ## Mål

@@ -3,8 +3,7 @@
 **Kategori:** Broken Access Control (A01)  
 **Dato:** 2026-11-21  
 **Miljø:** OWASP Juice Shop i Docker, Chrome DevTools  
-**Status:** Løst  
-**Hjælp brugt:** OWASP Juice Shop guide  
+**Status:** Løst   
 **Tidsforbrug:** Ca. 15 min.
 
 ## Mål
