@@ -1,6 +1,8 @@
 # A07:2025 – Authentication Failures
 
-Status: OWASP-siden er læst, og Pluralsight-kurset OWASP: Authentication Failures er set. PortSwiggers authentication-afsnit og 2FA simple bypass mangler endnu. Intet er afprøvet i egen kode.
+Status: OWASP-siden er læst, Pluralsight-kurset OWASP: Authentication Failures er set, og PortSwiggers authentication- og JWT-afsnit er løst. miseOS' login- og JWT-kode er læst igennem, men intet er afprøvet i egen kode endnu.
+
+JWT har sine egne noter: [JWT – JSON Web Tokens](jwt.md).
 
 Det her er mine noter til A07. A01 og den samlede plan ligger i [login, sessioner og adgangskontrol](adgangskontrol.md) og [forløbet](../forloeb/01-adgangskontrol.md).
 
@@ -146,6 +148,108 @@ For miseOS, der bruger JWT: Login giver altid et nyt token, så session fixation
 - **Længde frem for regler:** NIST SP 800-63B anbefaler lange adgangskoder og at tillade alle tegn og password managers. Revision 4 kræver mindst 15 tegn, når adgangskoden er eneste faktor, og mindst 8 tegn, når den indgår i MFA. Det skal jeg kontrollere i standarden. Der skal ikke stilles krav om specialtegn, og adgangskoder skal ikke skiftes med faste mellemrum.
 - **Brug et færdigt system:** OWASP anbefaler gennemprøvede login- og identitetssystemer frem for at bygge sit eget.
 
+## PortSwigger – Authentication vulnerabilities
+
+Jeg har løst afsnittets labs i Burp Suite. Det der gik igen: **login er ikke ét tjek, men et forløb, og hvert trin skal kunne holde til, at angriberen springer over, gentager eller ændrer det.**
+
+**Adgangskoder**
+- **Brugernavne kan findes på mange måder.** Ikke kun via fejlbeskeden, men også via en lille forskel i teksten (et punktum), statuskoden eller svartiden. Hvis serveren kun hasher adgangskoden, når brugeren findes, svarer den hurtigere på ukendte brugere. Samme fejlbesked er ikke nok; svaret skal også tage lige lang tid.
+- **Brute force-beskyttelse kan omgås.** En IP-blokering, der nulstilles ved et vellykket login på min egen konto, kan omgås ved at logge ind på min egen konto ind imellem. En kontolås afslører, hvilke brugernavne der findes, fordi kun rigtige konti bliver låst.
+- **Intruder** er værktøjet til det hele: Sniper til ét felt, Pitchfork og Cluster bomb til brugernavn og adgangskode sammen, og grep/svartid til at finde det svar, der skiller sig ud.
+
+**Totrinsbekræftelse (2FA)**
+- **2FA simple bypass:** efter adgangskoden er man allerede logget ind, så man kan gå direkte til `/my-account` uden at indtaste koden. Serveren tjekker ikke, at trin 2 er gennemført.
+- **Broken logic:** serveren læser fra en cookie, hvilken bruger koden gælder for. Så kan jeg ændre cookien til offeret og brute force koden.
+- Det jeg tager med: sessionen må først markeres som logget ind, når **alle** trin er gennemført, og hvem brugeren er, skal gemmes på serveren, ikke i en cookie klienten kan ændre.
+
+**Andre mekanismer**
+- **"Husk mig"-cookie** lavet af `brugernavn:md5(adgangskode)` kan genskabes og brute forces offline. Sådan en cookie skal være et tilfældigt token.
+- **Nulstilling af adgangskode:** tokenet skal tjekkes igen, når den nye adgangskode sendes, ikke kun når linket åbnes. Linket må ikke bygges ud fra `Host`-headeren, ellers kan angriberen få offerets link sendt til sin egen server (password reset poisoning).
+- **Skift af adgangskode** kan bruges som brute force-endpoint, hvis den nuværende adgangskode tjekkes med forskellige fejlbeskeder.
+
+**Det jeg tager med, når jeg selv bygger login:** ens svar (tekst, statuskode og tid), rate limiting pr. konto og pr. IP, 2FA-status gemt på serveren, tilfældige tokens til "husk mig" og nulstilling, og ingen links bygget ud fra `Host`-headeren.
+
+## Hvordan finder en angriber brugernavne og adgangskoder?
+
+### Først: find brugernavnene
+
+Brute force er meget lettere, når man kun skal gætte adgangskoden. Derfor starter en angriber med at finde brugernavne eller e-mails:
+
+- **Offentlige kilder (OSINT):** "Kontakt os"-sider, LinkedIn, firmaets e-mailformat (`fornavn@firma.dk`), GitHub-profiler og commits.
+- **Kildekoden:** e-mails i JavaScript (som administratoren i Juice Shops Password Strength), kommentarer i HTML og testdata i en offentlig git-historik.
+- **Appen selv:** anmeldelser, profiler, forfatternavne eller et API, der returnerer brugere med e-mail.
+- **Registrering:** "Denne e-mail er allerede i brug" fortæller præcis, hvilke konti der findes.
+- **Glemt adgangskode:** "Vi har sendt en mail" kontra "Ukendt bruger".
+- **Lækkede databaser:** e-mails og adgangskoder fra andre sider, som bruges til credential stuffing.
+- **Standardkonti:** `admin`, `administrator`, `test`, `root`.
+
+### Tegnene i svaret, der afslører et rigtigt brugernavn eller en rigtig adgangskode
+
+Fra PortSwigger-labs: serveren behøver ikke at skrive "forkert adgangskode", for at angriberen kan se forskellen. Alt, der er forskelligt mellem to svar, kan bruges. I Burp Intruder sorterer jeg på kolonnerne og kigger efter det ene svar, der skiller sig ud.
+
+| Tegn | Hvad man ser | Hvordan jeg finder det i Burp |
+|---|---|---|
+| **Fejlbesked** | "Ukendt bruger" kontra "Forkert adgangskode" | Læse svaret, eller Grep – Extract |
+| **Lille forskel i teksten** | Et punktum, et mellemrum eller et ord mere, fx `Invalid username or password.` kontra `Invalid username or password ` | Grep – Extract på fejlbeskeden, så de står side om side |
+| **Svarets længde** | Én request giver et svar, der er et par bytes længere eller kortere | Sortere på kolonnen **Length** |
+| **Statuskode** | `200` kontra `302`-redirect ved succes, eller `401` kontra `404` | Sortere på **Status** |
+| **Svartid** | Serveren hasher kun adgangskoden, hvis brugeren findes. En lang adgangskode gør forskellen større. | Kolonnen **Response received**. Gentag, fordi netværket støjer. |
+| **Kontolås** | Kun rigtige konti bliver låst, så "Too many attempts" afslører brugeren | Sende 5 forsøg pr. brugernavn med Cluster bomb |
+| **Redirect og cookies** | Succes sætter en ny session-cookie eller sender videre til `/my-account` | Se på headers, især `Set-Cookie` og `Location` |
+| **Andre endpoints** | Registrering, glemt adgangskode og skift af adgangskode svarer forskelligt | Samme teknik på hvert endpoint |
+
+Omgåelse af beskyttelsen, som jeg så i labs:
+- **IP-blokering:** omgås via `X-Forwarded-For`, hvis serveren stoler på headeren, eller ved at logge ind på min egen konto ind imellem, hvis tælleren nulstilles ved succes.
+- **Flere adgangskoder i én request:** hvis API'et accepterer et array af adgangskoder i JSON.
+- **Kontolås:** password spraying (én adgangskode mod mange konti) rammer aldrig grænsen for den enkelte konto.
+
+## miseOS mod de samme tricks
+
+Jeg har gået mine egne endpoints igennem med tegnene ovenfor. Jeg kender koden, så tabellen bygger på, hvordan jeg har lavet den. Næste skridt er at vise det med Burp.
+
+| Endpoint | Tegn | Afslører det noget? |
+|---|---|---|
+| Login | Fejlbesked og statuskode | Nej. Begge tilfælde giver `401` og `Invalid email or password`. |
+| Login | Længde | Nej. Svaret er ens, bortset fra tidsstempel og reference-ID, som ikke afhænger af brugeren. |
+| Login | **Svartid** | **Ja.** BCrypt (cost 12) køres kun, når e-mailen findes. Det tager typisk et par hundrede millisekunder, så forskellen burde være tydelig. |
+| Registrering | **Fejlbesked og statuskode** | **Ja.** En eksisterende e-mail giver `409 Conflict` og `A user with this email already exists`. Det er den letteste måde at finde brugere i miseOS. |
+| Skift af adgangskode | Fejlbesked | Kræver login og ejerskab, men `Current password is incorrect` uden rate limiting kan bruges til at brute force den nuværende adgangskode med et stjålet token (som PortSwiggers "Password brute-force via password change"). |
+| Git-historikken | OSINT | **Ja.** Testbrugernes e-mails lå i den offentlige historik (se listen nedenfor). |
+| Brugerlisten (`GET /users`) | – | Nej. Kun head chef har adgang. |
+| Glemt adgangskode | – | Findes ikke i miseOS. |
+
+### miseOS er sårbar over for brute force
+
+Jeg ved, at miseOS ikke har rate limiting. Sammen med at registreringen afslører, om en e-mail findes, er et angreb ligetil:
+1. Find e-mails i git-historikken eller gæt dem, og bekræft dem via registreringen.
+2. Kør en ordliste mod login med Intruder. Intet stopper det.
+
+BCrypt med cost 12 gør hvert forsøg langsomt for serveren, men det er ikke en beskyttelse. Det betyder også, at mange forsøg kan belaste serveren (tilgængelighed i CIA).
+
+**Det vil jeg rette:**
+- **Rate limiting pr. e-mail og pr. IP** på login, registrering og skift af adgangskode. Fx en voksende forsinkelse eller `429 Too Many Requests` efter 5 fejlede forsøg på 15 minutter. Ingen permanent kontolås, så en angriber ikke kan låse rigtige brugere ude.
+- **Ikke stole på `X-Forwarded-For`**, medmindre den kommer fra min egen reverse proxy.
+- **Ens svartid ved login:** sammenlign med en fast dummy-hash, når e-mailen ikke findes.
+- **Registrering uden at afsløre e-mails:** svare det samme uanset om e-mailen findes, fx "Tjek din e-mail for at fortsætte", og sende en mail til den eksisterende bruger i stedet. Det kræver e-mailbekræftelse, som miseOS ikke har i dag, så rate limiting er det første skridt.
+- **Logge og alarmere** ved mange fejlede forsøg (A09).
+
+Kodeidé til ens svartid ved login (ikke afprøvet):
+
+```java
+// Én gang ved opstart: en hash af en tilfældig værdi
+private static final String DUMMY_HASH = BCrypt.hashpw(UUID.randomUUID().toString(), BCrypt.gensalt(12));
+
+Optional<User> user = userReader.findByEmail(email);
+
+// BCrypt køres altid, så svaret tager lige lang tid, uanset om e-mailen findes
+boolean ok = user.isPresent()
+    ? user.get().verifyPassword(dto.password())
+    : PasswordUtil.verifyPassword(dto.password(), DUMMY_HASH);
+
+if (user.isEmpty() || !ok)
+    throw new AuthenticationException("Invalid email or password");
+```
+
 ## Kodeidé: tjek mod Pwned Passwords ved oprettelse
 
 Idé til miseOS, ikke afprøvet. Brugeren må ikke oprette sig eller skifte adgangskode, hvis adgangskoden findes i Have I Been Pwned. Tjekket ligger på serveren, så det ikke kan omgås ved at kalde API'et direkte uden om frontend.
@@ -246,23 +350,36 @@ Samme tjek skal også ske ved skift og nulstilling af adgangskode, ikke kun ved 
 
 ## Det jeg vil undersøge i miseOS
 
-miseOS bruger JWT. Ud fra listen ovenfor vil jeg undersøge:
+### Det ved jeg om min egen kode
 
-- [ ] Om registrering og skift af adgangskode kunne tjekke mod Pwned Passwords.
+- Adgangskoder hashes med BCrypt, cost 12 (`PasswordUtil`).
+- Der er intet tjek mod Pwned Passwords ved registrering eller skift af adgangskode. Det er derfor, jeg har skrevet [kodeidéen](#kodeidé-tjek-mod-pwned-passwords-ved-oprettelse).
+- Login giver samme fejlbesked (`Invalid email or password`) og statuskode (`401`) ved forkert e-mail og forkert adgangskode. Men BCrypt køres kun, når e-mailen findes, så svartiden kan afsløre, om en konto findes (CWE-208).
+- Registreringen svarer `409 Conflict` med `A user with this email already exists`, så den afslører, hvilke e-mails der findes.
+- Der er ingen rate limiting i backend, så login er sårbart over for brute force. Se [planen](#miseos-er-sårbar-over-for-brute-force).
+- JWT'en valideres på signatur, `exp`, `nbf` og `iss` og gælder i 30 minutter. Se [JWT-noterne](jwt.md#miseos--min-egen-analyse-af-jwt-koden).
+- Frontenden gemmer JWT'en i `localStorage`. Konsekvensen står i [JWT-noterne](jwt.md#mine-valg-og-deres-konsekvenser).
+- Logout sker kun i frontenden, som sletter `token` og `user` fra `localStorage`. Der er ingen logout-route på serveren, så et kopieret token virker, til det udløber.
+- `SECRET_KEY`, databaseadgang og API-nøgler kommer fra miljøvariabler, ikke fra koden.
+- **Men** `src/main/resources/http/http-client.env.json` lå i det offentlige repo fra 13. marts til 8. april 2026 (fjernet i commit `60bab54`). Filen indeholdt e-mails og adgangskoder til mine testbrugere, JWT'er og produktions-URL'en. Den ligger stadig i git-historikken. Det hører under A07 (CWE-798) og viser, at en `.gitignore` tilføjet bagefter ikke fjerner noget fra historikken.
+
+### Det skal jeg teste eller gøre
+
+- [ ] Skifte adgangskoderne på testkontiene fra git-historikken og sikre, at de ikke er genbrugt andre steder.
+- [ ] Køre gitleaks på hele historikken og overveje at rydde den med `git filter-repo`. Det sidste er kun en ekstra sikring, fordi kopier kan findes allerede.
+- [ ] Måle svartiden på login med en kendt og en ukendt e-mail i Burp og vise forskellen.
+- [ ] Vise med Intruder, at registreringen kan bruges til at finde e-mails.
+- [ ] Vise med Intruder, at login kan brute forces, og tjekke om reverse proxyen på dropletten begrænser noget.
+- [ ] Indføre rate limiting og dummy-hash, og teste igen bagefter.
+- [ ] Afprøve kodeidéen med Pwned Passwords ved registrering og skift af adgangskode.
 - [ ] Køre SonarQube eller Semgrep på miseOS og se, hvad der findes af hardkodede hemmeligheder og svag kryptografi.
-- [ ] Hvor klienten gemmer JWT'en (`localStorage` eller cookie).
-
-- [ ] Hvordan adgangskoder gemmes, og med hvilken hashfunktion.
-- [ ] Om login giver samme fejlbesked ved forkert brugernavn og forkert adgangskode.
-- [ ] Om der er en grænse for mislykkede loginforsøg.
-- [ ] Hvilke claims der valideres i JWT'en, og hvor lang udløbstiden er.
-- [ ] Hvad logout betyder, når der bruges JWT. Jeg har ikke fundet en logout-route; se [noterne om miseOS](adgangskontrol.md).
-- [ ] Om der er hardkodede nøgler eller adgangskoder i koden eller konfigurationen.
 
 ## Øvelser
 
-- [ ] PortSwigger: Authentication vulnerabilities-afsnittet.
-- [ ] PortSwigger: 2FA simple bypass. Forklare hvilken kontrol i loginforløbet der mangler.
+- [x] PortSwigger: Authentication vulnerabilities-afsnittet.
+- [x] PortSwigger: 2FA simple bypass. Kontrollen der mangler: serveren tjekker ikke, at trin 2 er gennemført, før kontosiden vises.
+- [x] PortSwigger: JWT attacks. Se [JWT-noterne](jwt.md).
+- [ ] Juice Shop: Broken Authentication (i gang).
 
 ## Forbindelse til Java4Shell
 
@@ -273,6 +390,7 @@ miseOS bruger JWT. Ud fra listen ovenfor vil jeg undersøge:
 - [OWASP Top 10:2025 – A07 Authentication Failures](https://top10.owasp.org/2025/A07_2025-Authentication_Failures/)
 - [NIST SP 800-63B](https://pages.nist.gov/800-63-4/sp800-63b.html)
 - [PortSwigger – Authentication vulnerabilities](https://portswigger.net/web-security/authentication)
+- [PortSwigger – JWT attacks](https://portswigger.net/web-security/jwt)
 - [Pluralsight – OWASP: Authentication Failures](https://www.pluralsight.com/courses/owasp-authentication-failures)
 - [Have I Been Pwned – Pwned Passwords API](https://haveibeenpwned.com/API/v3#PwnedPasswords)
 - [OWASP Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
